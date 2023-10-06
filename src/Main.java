@@ -3,8 +3,70 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+//root = [1,2,2,3,4,4,3]
+        TreeNode root = new TreeNode(1);
+        TreeNode root1 = new TreeNode(2);
+        TreeNode root2 = new TreeNode(2);
+        TreeNode root3 = new TreeNode(3);
+        TreeNode root4 = new TreeNode(4);
+        TreeNode root5 = new TreeNode(4);
+        TreeNode root6 = new TreeNode(3);
+        root.left = root1;
+        root.right = root2;
+        root1.left = root3;
+        root1.right = root4;
+        root2.left = root5;
+        root2.right = root6;
+        System.out.println(isSymmetric(root));
+
 
     }
+
+
+    /**
+     * 对称二叉树
+     * @param root 二叉树根节点
+     * @return 是否为对称二叉树 (暴力...)
+     */
+    public static boolean isSymmetric(TreeNode root) {
+        ArrayList<Integer> integers = mid1(root.left,-1500);
+        ArrayList<Integer> integers1 = mid2(root.right,-1500);
+
+        if (integers.size() != integers1.size()){
+            return  false;
+        }
+
+        for (int i = 0; i < integers.size(); i++) {
+            if (!Objects.equals(integers.get(i), integers1.get(i))){
+                return false;
+            }
+        }
+     return true;
+    }
+    // 中序遍历
+    public static ArrayList<Integer> mid1(TreeNode root,int count){
+        ArrayList<Integer> list = new ArrayList<>();
+        if (root == null){
+            list.add(count);
+            return list;
+        }
+        list.addAll(mid1(root.left,++count));
+        list.add(root.val);
+        list.addAll(mid1(root.right,++count));
+        return list;
+    }
+    public static ArrayList<Integer> mid2(TreeNode root,int count){
+        ArrayList<Integer> list = new ArrayList<>();
+        if (root == null){
+            list.add(count);
+        return list;
+        }
+        list.addAll(mid2(root.right,++count));
+        list.add(root.val);
+        list.addAll(mid2(root.left,++count));
+        return list;
+    }
+
 
 
     /**
