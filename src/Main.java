@@ -3,24 +3,55 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//root = [1,2,2,3,4,4,3]
-        TreeNode root = new TreeNode(1);
-        TreeNode root1 = new TreeNode(2);
-        TreeNode root2 = new TreeNode(2);
-        TreeNode root3 = new TreeNode(3);
-        TreeNode root4 = new TreeNode(4);
-        TreeNode root5 = new TreeNode(4);
-        TreeNode root6 = new TreeNode(3);
+//root = [3,9,20,null,null,15,7]
+        TreeNode root = new TreeNode(3);
+        TreeNode root1 = new TreeNode(9);
+        TreeNode root2 = new TreeNode(20);
+        TreeNode root3 = new TreeNode(15);
+        TreeNode root4 = new TreeNode(7);
         root.left = root1;
         root.right = root2;
-        root1.left = root3;
-        root1.right = root4;
-        root2.left = root5;
-        root2.right = root6;
-        System.out.println(isSymmetric(root));
+        root2.left = root3;
+        root2.right = root4;
+        System.out.println(levelOrder(root));
 
 
     }
+
+
+    /**
+     * Binary Tree Level Order Traversal
+     * @param root 二叉树根节点
+     * @return 二叉树层序遍历结果        (map秒了)
+     */
+
+    public static List<List<Integer>> levelOrder(TreeNode root) {
+        Map<Integer,List<Integer>> map = new HashMap<>();
+        level(root,map,0);
+        List<List<Integer>> list = new ArrayList<>();
+        for (List<Integer> li : map.values() ) {
+            list.add(li);
+        }
+        return list;
+    }
+    public static void level(TreeNode root,Map<Integer,List<Integer>> map,int count) {
+        if (root == null){
+            return ;
+        }
+        if (map.get(count) == null){
+            List<Integer> list = new ArrayList<>();
+            list.add(root.val);
+            map.put(count,list);
+        }else {
+            map.get(count).add(root.val);
+        }
+        ++count;
+        level(root.left,map,count);
+        level(root.right,map,count);
+    }
+
+
+
 
 
     /**
