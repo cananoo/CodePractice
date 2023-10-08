@@ -13,10 +13,29 @@ public class Main {
         root.right = root2;
         root2.left = root3;
         root2.right = root4;
-        System.out.println(levelOrder(root));
+        System.out.println(maxDepth(root));
 
 
     }
+
+    /**
+     * Maximum Depth of Binary Tree
+     * @param root  二叉树根节点
+     * @return 二叉树最大深度 (递归秒了)
+     */
+    public static int maxDepth(TreeNode root) {
+     return    count(root,0);
+    }
+    public static int count(TreeNode root,int count) {
+        if (root == null){
+            return  count;
+        }
+        ++count;
+       int left = count(root.left,count);
+       int right = count(root.right,count);
+        return Math.max(left,right);
+    }
+
 
 
     /**
