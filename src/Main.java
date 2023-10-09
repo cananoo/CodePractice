@@ -3,20 +3,41 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//root = [3,9,20,null,null,15,7]
-        TreeNode root = new TreeNode(3);
-        TreeNode root1 = new TreeNode(9);
-        TreeNode root2 = new TreeNode(20);
-        TreeNode root3 = new TreeNode(15);
-        TreeNode root4 = new TreeNode(7);
-        root.left = root1;
-        root.right = root2;
-        root2.left = root3;
-        root2.right = root4;
-        System.out.println(maxDepth(root));
-
-
+        System.out.println(buildTree(new int[]{3,9,20,15,7},new int[]{9,3,15,20,7}));
     }
+
+    /**
+     *   Construct Binary Tree from Preorder and Inorder Traversal
+     * @param preorder 前序遍历结果
+     * @param inorder 中序遍历结果
+     * @return 二叉树根节点         （递归直接解决--根据前序和中序的位置关系解决）
+     */
+    public static TreeNode buildTree(int[] preorder, int[] inorder) {
+        if ( preorder.length == 0 || inorder.length == 0){
+            return null;
+        }
+        TreeNode root = new TreeNode(preorder[0]);
+        int index = -1;
+        for (int i = 0; i < inorder.length; i++) {
+            if (inorder[i] == preorder[0]){
+                index = i;
+            }
+        }
+        if (index != 0 && index!= -1){
+            int[] newPreoder = Arrays.copyOfRange(preorder, 1, index + 1);
+            int[] newInorder = Arrays.copyOfRange(inorder, 0, index);
+            TreeNode leftRoot = buildTree(newPreoder, newInorder);
+            root.left = leftRoot;
+        }
+        if (index != inorder.length-1 && index != -1){
+            int[] newPreoder = Arrays.copyOfRange(preorder, index + 1, preorder.length);
+            int[] newInorder = Arrays.copyOfRange(inorder, index + 1 , inorder.length);
+            TreeNode RightRoot = buildTree(newPreoder, newInorder);
+            root.right = RightRoot;
+        }
+      return  root;
+    }
+
 
     /**
      * Maximum Depth of Binary Tree
@@ -208,7 +229,16 @@ public class Main {
           this.left = left;
           this.right = right;
       }
-  }
+
+          @Override
+          public String toString() {
+              return "TreeNode{" +
+                      "val=" + val +
+                      ", left=" + left +
+                      ", right=" + right +
+                      '}';
+          }
+      }
 
     /**
      *  最大矩形
