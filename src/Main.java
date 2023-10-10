@@ -3,8 +3,58 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(buildTree(new int[]{3,9,20,15,7},new int[]{9,3,15,20,7}));
+// root = [1,2,5,3,4,null,6]
+
+        TreeNode root = new TreeNode(1);
+        TreeNode root1 = new TreeNode(2);
+        TreeNode root2 = new TreeNode(5);
+        TreeNode root3 = new TreeNode(3);
+        TreeNode root4 = new TreeNode(4);
+        TreeNode root5 = new TreeNode(6);
+        root.left = root1;
+        root.right = root2;
+        root1.left = root3;
+        root1.right = root4;
+        root2.right = root5;
+        flatten(root);
+        System.out.println(root);
+
     }
+
+
+    /**
+     * Flatten Binary Tree to Linked List
+     * @param root  二叉树根节点  (递归很容易解决)
+     */
+    public static void flatten(TreeNode root) {
+        if(root == null) {
+            return;
+        }
+        flatten(root.left);
+        flatten(root.right);
+
+        if (root.left == null){
+            return;
+        }
+        if (root.right == null){
+            root.right = root.left;
+            root.left = null;
+        }else {
+            TreeNode temp =  root.left;
+            while (true){
+                if (temp.right == null){
+                    temp.right = root.right;
+                    break;
+                }else {
+                    temp = temp.right;
+                }
+            }
+            root.right = root.left;
+            root.left = null;
+        }
+    }
+
+
 
     /**
      *   Construct Binary Tree from Preorder and Inorder Traversal
