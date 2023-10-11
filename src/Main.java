@@ -3,22 +3,41 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-// root = [1,2,5,3,4,null,6]
+        System.out.println(maxProfit(new int[]{7,1,5,3,6,4}));
+    }
 
-        TreeNode root = new TreeNode(1);
-        TreeNode root1 = new TreeNode(2);
-        TreeNode root2 = new TreeNode(5);
-        TreeNode root3 = new TreeNode(3);
-        TreeNode root4 = new TreeNode(4);
-        TreeNode root5 = new TreeNode(6);
-        root.left = root1;
-        root.right = root2;
-        root1.left = root3;
-        root1.right = root4;
-        root2.right = root5;
-        flatten(root);
-        System.out.println(root);
 
+    /**
+     * Best Time to Buy and Sell Stock
+     * @param prices  股票价格数组
+     * @return 最大利润    (滑动窗口解题--只需要遍历一遍)
+     */
+    public static int maxProfit(int[] prices) {
+        int n = prices.length;
+        int max = 0;
+        int left = 0;
+            for (int j = left; j < n ; j++) {
+                if (prices[j] < prices[left]){
+                    left = j;
+                }else if (prices[j] > prices[left] && prices[j] - prices[left] >max){
+                    max = prices[j] - prices[left];
+                }
+            }
+        return  max;
+    }
+
+    //(暴力超时)
+    public static int maxProfit2(int[] prices) {
+        int n = prices.length;
+         int max = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i+1; j < n; j++) {
+                if (prices[j] - prices[i] > 0 && prices[j] - prices[i] > max) {
+                    max = prices[j] - prices[i];
+                }
+            }
+        }
+return max;
     }
 
 
