@@ -3,7 +3,32 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(maxProfit(new int[]{7,1,5,3,6,4}));
+
+    }
+
+
+    /**
+     * Binary Tree Maximum Path Sum
+     * @param root 二叉树根节点
+     * @return 二叉树最大路径和
+     */
+//返回子树路径中最大的前缀和(如果将树的路径从上往下看的话，那么前缀和即为以当前节点向下连续的节点之和
+    int count = Integer.MIN_VALUE;
+    public  int maxPathSum(TreeNode root) {
+         dfs(root);
+         return count;
+    }
+    private  int dfs(TreeNode root){
+        if (root == null){
+            return 0;
+        }
+        int left = dfs(root.left);
+        int right = dfs(root.right);
+        count = Math.max(count,root.val);
+        count = Math.max(count,root.val + left);
+        count = Math.max(count,root.val + right);
+        count = Math.max(count,root.val + left + right);
+        return  Math.max(0,Math.max(left,right)) +root.val;
     }
 
 
