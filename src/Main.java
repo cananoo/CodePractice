@@ -1,9 +1,38 @@
 
+
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println(longestConsecutive(new int[]{1,2,0,1}));
+    }
 
+
+    /**
+     * 最长连续序列
+     * @param nums 无序整数数组
+     * @return 最长连续序列长度
+     */
+    public static int longestConsecutive(int[] nums) {
+        if (nums.length == 0){
+            return 0;
+        }
+        Arrays.sort(nums);
+        int max = 0;
+        int count = 1;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] + 1 == nums[i + 1]) {
+                count++;
+            }else if (nums[i]  == nums[i + 1] ){
+                continue;
+            } else {
+                if (count > max){
+                    max = count;
+                }
+                count = 1;
+            }
+        }
+     return Math.max(max,count);
     }
 
 
