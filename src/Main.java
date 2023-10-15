@@ -4,9 +4,45 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(longestConsecutive(new int[]{1,2,0,1}));
+        System.out.println(singleNumber2(new int[]{1,1,3}));
     }
 
+
+    /**
+     * 只出现一次的数字
+     * @param nums  整数数组
+     * @return 只出现一次的数字
+     */
+    //O(n)  -- 异或
+    public static int singleNumber2(int[] nums) {
+        int ans = nums[0];
+        if (nums.length > 1) {
+            for (int i = 1; i < nums.length; i++) {
+                ans = ans ^ nums[i];
+            }
+        }
+        return ans;
+    }
+
+    //O(nlogn)
+    public static int singleNumber(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        int res = Integer.MIN_VALUE;
+        if (nums.length == 1){
+            return nums[0];
+        }
+        for (int i = 0; i < n - 1; i+=2) {
+             if (nums[i] != nums[i+1]){
+                 res = nums[i];
+                 break;
+             }
+             if (i + 2 >= n - 1 &&  n%2 != 0 ){
+                 res = nums[n-1];
+             }
+        }
+          return res;
+    }
 
     /**
      * 最长连续序列
