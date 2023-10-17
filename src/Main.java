@@ -4,11 +4,41 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(wordBreak2("aaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaa",
-                Arrays.asList("aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa","ba")));
+//head = [3,2,0,-4]
+
+        ListNode listNode = new ListNode(3);
+        ListNode listNode1 = new ListNode(2);
+        ListNode listNode2 = new ListNode(0);
+        ListNode listNode3 = new ListNode(-4);
+        listNode.next = listNode1;
+        listNode1.next = listNode2;
+        listNode2.next = listNode3;
+        listNode3.next = listNode2;
+        System.out.println(hasCycle(listNode));
     }
 
 
+    /**
+     * Linked List Cycle
+     * @param head 链表头节点
+     * @return 是否有环     (遍历看指针是否重复)
+     */
+    public static boolean hasCycle(ListNode head) {
+        if (head == null) return false;
+     List<String> list = new ArrayList<>();
+     ListNode temp = head;
+       boolean res = false;
+       while (temp != null){
+           if (!list.contains(temp.toString())){
+               list.add(temp.toString());
+               temp = temp.next;
+           }else {
+               res = true;
+               break;
+           }
+        }
+       return res;
+    }
 
 
     /**
