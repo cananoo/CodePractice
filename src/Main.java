@@ -14,9 +14,31 @@ public class Main {
         listNode1.next = listNode2;
         listNode2.next = listNode3;
         listNode3.next = listNode2;
-        System.out.println(hasCycle(listNode));
+        System.out.println(detectCycle(listNode).val);
     }
 
+
+    /**
+     * Linked List Cycle Ⅱ*
+     * @param head 链表头节点
+     * @return 环的入口节点 （和前一题一个思路）
+     */
+    public static ListNode detectCycle(ListNode head) {
+        if (head == null) return null;
+        List<String> list = new ArrayList<>();
+        ListNode temp = head;
+        ListNode res = null;
+        while (temp != null){
+            if (!list.contains(temp.toString())){
+                list.add(temp.toString());
+                temp = temp.next;
+            }else {
+                res = temp;
+                break;
+            }
+        }
+        return res;
+    }
 
     /**
      * Linked List Cycle
