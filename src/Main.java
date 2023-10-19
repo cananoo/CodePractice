@@ -4,18 +4,126 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//head = [3,2,0,-4]
+//["LRUCache","put","put","get","put","get","put","get","get","get"]
+//[[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]]
 
-        ListNode listNode = new ListNode(3);
-        ListNode listNode1 = new ListNode(2);
-        ListNode listNode2 = new ListNode(0);
-        ListNode listNode3 = new ListNode(-4);
-        listNode.next = listNode1;
-        listNode1.next = listNode2;
-        listNode2.next = listNode3;
-        listNode3.next = listNode2;
-        System.out.println(detectCycle(listNode).val);
+
+        LRUCache2 cache = new LRUCache2(2);
+        cache.put(1,1);
+        cache.put(2,2);
+        System.out.println(cache.get(1));;
+        cache.put(3,3);
+        System.out.println(cache.get(2));;
+        cache.put(4,4);
+        System.out.println(cache.get(1));;
+        System.out.println(cache.get(3));;
+        System.out.println(cache.get(4));;
+
     }
+
+    /**
+     * LRU 缓存 (利用LickedHashMap -- 哈希表和双向链表的结合 解决)
+     */
+    static class LRUCache2 {
+        int cap;
+        LinkedHashMap<Integer,Integer> cache = new LinkedHashMap<>();
+        public LRUCache2(int capacity) {
+           cap = capacity;
+        }
+        public int get(int key) {
+            if (!cache.containsKey(key)){
+                return  -1;
+            }
+           makeRecently(key);
+            return cache.get(key);
+        }
+        public void put(int key, int value) {
+            if (cache.containsKey(key)){
+                makeRecently(key);
+                cache.put(key,value);
+                return;
+            }
+            if (cap > cache.size()){
+                cache.put(key,value);
+                return;
+            }
+         cache.remove(cache.keySet().iterator().next());
+            cache.put(key,value);
+        }
+
+        public void makeRecently(int key) {
+            Integer k = cache.remove(key);
+            cache.put(key,k);
+        }
+    }
+
+
+    //(超时)
+   static class LRUCache {
+       private  Map<Integer,String> map = new HashMap<>();
+       private int count ;
+       private int num;
+        public LRUCache(int capacity) {
+         count = capacity;
+        }
+        public int get(int key) {
+
+         if (!map.containsKey(key))
+            return -1;
+
+         put(key,Integer.parseInt(map.get(key).substring(6,String.valueOf(map.get(key)).length())));
+         return Integer.parseInt(map.get(key).substring(6,String.valueOf(map.get(key)).length()));
+        }
+        public void put(int key, int value) {
+          if (map.containsKey(key)){
+              String str = String.valueOf(num);
+              int n = str.length();
+              for (int i = 0; i < 6 - n; i++) {
+                  str = "0" + str;
+              }
+              map.put(key,str + value);
+              num++;
+              return;
+          }
+          if (count > 0){
+              String str = String.valueOf(num);
+              int n = str.length();
+              for (int i = 0; i < 6 - n; i++) {
+                  str = "0" + str;
+              }
+              map.put(key,str + value);
+              num++;
+              count--;
+          }else {
+              int LRU_Key = Integer.MIN_VALUE ;
+              long temp = Long.MAX_VALUE;
+              for (Map.Entry<Integer,String> entry: map.entrySet()) {
+                  long change = temp;
+                  temp = Math.min(Long.parseLong(entry.getValue().substring(0, 6)),temp);
+                  if (change != temp){
+                      LRU_Key = entry.getKey();
+                  }
+              }
+              map.remove(LRU_Key);
+              String str = String.valueOf(num);
+              int n = str.length();
+              for (int i = 0; i < 6 - n; i++) {
+                  str = "0" + str;
+              }
+              map.put(key,str + value);
+              num++;
+          }
+        }
+    }
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
+
+
 
 
     /**
