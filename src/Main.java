@@ -4,22 +4,51 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//["LRUCache","put","put","get","put","get","put","get","get","get"]
-//[[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]]
+//head = [4,2,1,3]
 
-
-        LRUCache2 cache = new LRUCache2(2);
-        cache.put(1,1);
-        cache.put(2,2);
-        System.out.println(cache.get(1));;
-        cache.put(3,3);
-        System.out.println(cache.get(2));;
-        cache.put(4,4);
-        System.out.println(cache.get(1));;
-        System.out.println(cache.get(3));;
-        System.out.println(cache.get(4));;
-
+        ListNode head = new ListNode(4);
+        ListNode head1 = new ListNode(2);
+        ListNode head2 = new ListNode(1);
+        ListNode head3 = new ListNode(3);
+        head.next = head1;
+        head1.next = head2;
+        head2.next = head3;
+        head3.next = null;
+        sortList(head);
     }
+
+
+    /**
+     * 排序链表
+     * @param head  链表头节点
+     * @return 排序后的链表
+     */
+    public static ListNode sortList(ListNode head) {
+        if (head == null){
+            return null;
+        }
+          List<Integer> list = new ArrayList<>();
+          while (head != null){
+              list.add(head.val);
+              head = head.next;
+          }
+          list.sort(((o1, o2) -> {
+              if (o1 > o2) return 1;
+              if (o1 < o2) return -1;
+              return 0;
+          }));
+          head = new ListNode();
+          ListNode temp = head;
+        for (int i = 0; i < list.size(); i++) {
+            temp.val = list.get(i);
+            if (i == list.size() - 1) break;
+            temp.next = new ListNode();
+            temp = temp.next;
+        }
+          return head;
+    }
+
+
 
     /**
      * LRU 缓存 (利用LickedHashMap -- 哈希表和双向链表的结合 解决)
