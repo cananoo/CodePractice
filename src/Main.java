@@ -4,19 +4,28 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//head = [4,2,1,3]
-
-        ListNode head = new ListNode(4);
-        ListNode head1 = new ListNode(2);
-        ListNode head2 = new ListNode(1);
-        ListNode head3 = new ListNode(3);
-        head.next = head1;
-        head1.next = head2;
-        head2.next = head3;
-        head3.next = null;
-        sortList(head);
+        System.out.println(maxProduct(new int[]{-2,0,-1}));
     }
 
+
+    /**
+     * 乘积最大子数组
+     * @param nums  整数数组
+     * @return 乘积最大子数组的乘积 (暴力竟然过了..第一次)
+     */
+    public static int maxProduct(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            int temp = nums[i];
+            max = Math.max(max, temp);
+            for (int j = i + 1; j < n; j++) {
+                temp = temp * nums[j];
+                max = Math.max(max, temp);
+            }
+        }
+        return max;
+    }
 
     /**
      * 排序链表
