@@ -4,7 +4,52 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(maxProduct(new int[]{-2,0,-1}));
+        MinStack minStack = new MinStack();
+        minStack.push(-2);
+        minStack.push(0);
+        minStack.push(-3);
+        System.out.println(minStack.getMin());
+        minStack.pop();
+        System.out.println(minStack.top());
+        System.out.println(minStack.getMin());
+    }
+
+    /**
+     * 最小栈
+     */
+    static class MinStack {
+        private List<Integer> minList;
+        private int[] stack ;
+        private int count;
+        public MinStack() {
+            minList = new ArrayList<>();
+            stack = new int[30000];
+            count = 0;
+        }
+
+        public void push(int val) {
+           stack[count++] = val;
+           minList.add(val);
+           minList.sort((o1, o2) -> {
+               if (o1 > o2) return 1;
+               if (o1 < o2) return -1;
+               return 0;
+           });
+        }
+
+        public void pop() {
+            int val = stack[--count];
+            stack[count] = 0;
+            minList.remove((Object)val);
+        }
+
+        public int top() {
+           return stack[count - 1];
+        }
+
+        public int getMin() {
+         return minList.get(0);
+        }
     }
 
 
