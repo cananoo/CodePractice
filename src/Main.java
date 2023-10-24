@@ -4,15 +4,53 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        MinStack minStack = new MinStack();
-        minStack.push(-2);
-        minStack.push(0);
-        minStack.push(-3);
-        System.out.println(minStack.getMin());
-        minStack.pop();
-        System.out.println(minStack.top());
-        System.out.println(minStack.getMin());
+    // intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
+        ListNode listNode = new ListNode(4);
+        ListNode listNode1 = new ListNode(1);
+        ListNode listNode2 = new ListNode(8);
+        ListNode listNode3 = new ListNode(4);
+        ListNode listNode4 = new ListNode(5);
+
+        ListNode listNode5 = new ListNode(5);
+        ListNode listNode6 = new ListNode(6);
+        ListNode listNode7 = new ListNode(1);
+
+
+        listNode.next = listNode1;
+        listNode1.next = listNode2;
+        listNode2.next = listNode3;
+        listNode3.next= listNode4;
+
+        listNode5.next = listNode6;
+        listNode6.next = listNode7;
+        listNode7.next = listNode2;
+
+
+
+        ListNode intersectionNode = getIntersectionNode(listNode, listNode5);
+        System.out.println(intersectionNode.val);
     }
+
+    /**
+     * 相交链表
+     * @param headA  链表A头节点
+     * @param headB 链表B头节点
+     * @return 相交节点
+     */
+    public static ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        List<ListNode> list = new ArrayList<>();
+        while (headA != null){
+            list.add(headA);
+            headA = headA.next;
+        }
+        while (headB != null){
+            if (list.contains(headB)) return headB;
+            headB = headB.next;
+        }
+        return null;
+    }
+
+
 
     /**
      * 最小栈
