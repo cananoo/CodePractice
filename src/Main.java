@@ -4,31 +4,35 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-    // intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
-        ListNode listNode = new ListNode(4);
-        ListNode listNode1 = new ListNode(1);
-        ListNode listNode2 = new ListNode(8);
-        ListNode listNode3 = new ListNode(4);
-        ListNode listNode4 = new ListNode(5);
+        System.out.println(majorityElement(new int[]{
+                3,2,3
+        }));
+    }
 
-        ListNode listNode5 = new ListNode(5);
-        ListNode listNode6 = new ListNode(6);
-        ListNode listNode7 = new ListNode(1);
-
-
-        listNode.next = listNode1;
-        listNode1.next = listNode2;
-        listNode2.next = listNode3;
-        listNode3.next= listNode4;
-
-        listNode5.next = listNode6;
-        listNode6.next = listNode7;
-        listNode7.next = listNode2;
-
-
-
-        ListNode intersectionNode = getIntersectionNode(listNode, listNode5);
-        System.out.println(intersectionNode.val);
+    /**
+     * Majority Element
+     * @param nums 整数数组
+     * @return 众数
+     */
+    public static int majorityElement(int[] nums) {
+      int n  = nums.length;
+      Map<Integer,Integer> map = new HashMap<>();
+        for (int num: nums) {
+            if (map.containsKey(num)){
+                map.put(num,map.get(num) + 1);
+            }else {
+                map.put(num,1);
+            }
+        }
+        int isMajority = n / 2;
+        int majority = Integer.MIN_VALUE;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+              if (entry.getValue() > isMajority){
+                  majority = entry.getKey();
+                  break;
+              }
+        }
+      return majority;
     }
 
     /**
