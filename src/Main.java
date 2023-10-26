@@ -3,11 +3,61 @@
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println(majorityElement(new int[]{
-                3,2,3
+        public static void main(String[] args) {
+        System.out.println(rob2(new int[]{
+                0,0,0
         }));
     }
+
+    /**
+     * House Robber
+     * @param nums 整数数组
+     * @return 最大金额
+     */
+    // 加一个记忆Map，记录数组长度为n时的最大值，避免重复计算 (自底向上)
+    static Map<Integer,Integer> memoryMap = new HashMap<>();
+    public static int rob2(int[] nums) {
+        int n = nums.length;
+        int max = 0;
+        if (n == 1) {
+            return nums[0];
+        }
+        for (int i = 0; i < n; i++) {
+            int start = nums[i];
+            int temp = 0;
+            if (i + 2 < n){
+                if (memoryMap.containsKey(n - i - 2)){
+                    temp = memoryMap.get(n - i - 2);
+                }else {
+                    int[] ints = Arrays.copyOfRange(nums,i + 2,n);
+                    temp = rob2(ints);
+                    memoryMap.put(n - i - 2,temp);
+                }
+            }
+            start += temp;
+            if (start > max) max = start;
+        }
+        return max;
+    }
+    // （直接递归超时）
+    public static int rob(int[] nums) {
+        int n = nums.length;
+        int max = 0;
+        if (n == 1) {
+            return nums[0];
+        }
+        for (int i = 0; i < n; i++) {
+            int start = nums[i];
+            int temp = 0;
+            if (i + 2 < n){
+                int[] ints = Arrays.copyOfRange(nums,i + 2,n);
+                temp = rob(ints);
+            }
+            start += temp;
+            if (start > max) max = start;
+        }
+        return max;
+}
 
     /**
      * Majority Element
