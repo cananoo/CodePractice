@@ -4,9 +4,48 @@ import java.util.*;
 
 public class Main {
         public static void main(String[] args) {
-        System.out.println(rob2(new int[]{
-                0,0,0
-        }));
+        System.out.println(
+              numIslands(  new char[][]{
+                      {'1','1','0','0','0'},
+                      {'1','1','0','0','0'},
+                      {'0','0','1','0','0'},
+                      {'0','0','0','1','1'}}
+              ));
+        }
+
+    /**
+     * Number of Islands
+     * @param grid  二维字符数组
+     * @return 岛屿数量 (递归秒了)
+     */
+    public static int numIslands(char[][] grid) {
+        if (grid.length == 0){
+            return 0;
+        }
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == '1'){
+                    setIsland(grid,i,j);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+    public static void  setIsland(char[][] grid,int x,int y){
+        if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length){
+            return;
+        }
+        if (grid[x][y] == '1'){
+            grid[x][y] = '0';
+        }else {
+            return;
+        }
+        setIsland(grid,x-1,y);
+        setIsland(grid,x+1,y);
+        setIsland(grid,x,y+1);
+        setIsland(grid,x,y-1);
     }
 
     /**
