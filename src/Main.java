@@ -4,14 +4,42 @@ import java.util.*;
 
 public class Main {
         public static void main(String[] args) {
-        System.out.println(
-              numIslands(  new char[][]{
-                      {'1','1','0','0','0'},
-                      {'1','1','0','0','0'},
-                      {'0','0','1','0','0'},
-                      {'0','0','0','1','1'}}
-              ));
+            //head = [1,2,3,4,5] reverseList
+            ListNode head = new ListNode(1);
+            ListNode node1 = new ListNode(2);
+            ListNode node2 = new ListNode(3);
+            ListNode node3 = new ListNode(4);
+            ListNode node4 = new ListNode(5);
+            head.next = node1;
+            node1.next = node2;
+            node2.next = node3;
+            node3.next = node4;
+            node4.next = null;
+            ListNode listNode = reverseList(head);
+            System.out.println(listNode);
         }
+
+
+    /**
+     * Reverse Linked List
+     * @param head  链表头节点
+     * @return  反转后的链表头节点
+     */
+    public static ListNode reverseList(ListNode head) {
+           if (head == null){
+               return null;
+           }
+           List<ListNode> list = new ArrayList<>();
+           while (head != null){
+                list.add(head);
+                head = head.next;
+           }
+        for (int i = list.size() - 1; i > 0; i--) {
+            list.get(i).next = list.get(i - 1);
+        }
+         list.get(0).next = null;
+        return list.get(list.size()-1);
+    }
 
     /**
      * Number of Islands
