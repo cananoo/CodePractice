@@ -3,22 +3,44 @@
 import java.util.*;
 
 public class Main {
-        public static void main(String[] args) {
-            //head = [1,2,3,4,5] reverseList
-            ListNode head = new ListNode(1);
-            ListNode node1 = new ListNode(2);
-            ListNode node2 = new ListNode(3);
-            ListNode node3 = new ListNode(4);
-            ListNode node4 = new ListNode(5);
-            head.next = node1;
-            node1.next = node2;
-            node2.next = node3;
-            node3.next = node4;
-            node4.next = null;
-            ListNode listNode = reverseList(head);
-            System.out.println(listNode);
-        }
+    public static void main(String[] args) {
+//Input: numCourses = 2, prerequisites = [[1,0],[1,2],[0,1]]
 
+       int[][] prerequisites = {{1,0},{1,2},{0,1}};
+        System.out.println(canFinish(3,prerequisites));
+    }
+
+
+    /**
+     * Course Schedule
+     * @param numCourses  课程数
+     * @param prerequisites 课程关系数组
+     * @return 是否可以完成课程
+     */
+    public static boolean canFinish(int numCourses, int[][] prerequisites) {
+        Set<Integer> finish = new HashSet<>();
+        List<Integer> havaPre = new ArrayList<>();
+        while (true){
+            for (int i = 0; i < numCourses; i++) {
+                finish.add(i);
+            }
+            for (int i = 0; i < prerequisites.length; i++) {
+                if (prerequisites[i][0] != -1) havaPre.add(prerequisites[i][0]);
+            }
+            finish.removeAll(havaPre);
+            boolean flag = false;
+            for (int i = 0; i < prerequisites.length; i++) {
+                if (finish.contains(prerequisites[i][1]) && prerequisites[i][0] != -1){
+                    prerequisites[i][0] = -1;
+                    flag = true;
+                }
+            }
+            if (!flag) break;
+            finish.clear();
+            havaPre.clear();
+        }
+        return finish.size() == numCourses;
+    }
 
     /**
      * Reverse Linked List
