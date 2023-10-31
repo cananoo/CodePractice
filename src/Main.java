@@ -4,12 +4,46 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//Input: numCourses = 2, prerequisites = [[1,0],[1,2],[0,1]]
 
-       int[][] prerequisites = {{1,0},{1,2},{0,1}};
-        System.out.println(canFinish(3,prerequisites));
+        Trie trie = new Trie();
+        trie.insert("apple");
+        System.out.println(trie.search("apple"));   // 返回 True
+        System.out.println(trie.search("app"));     // 返回 False
+        System.out.println(trie.startsWith("app")); // 返回 True
+        trie.insert("app");
+        System.out.println(trie.search("app"));     // 返回 True
+
+
     }
 
+
+    /**
+     * Implement Trie (Prefix Tree)
+     */
+    static class Trie {
+        Map<String,Boolean> map = new HashMap<>();
+        public Trie() {
+
+        }
+
+        public void insert(String word) {
+         map.put(word,true);
+        }
+
+        public boolean search(String word) {
+         if (map.containsKey(word)) return true;
+
+         return false;
+        }
+
+        public boolean startsWith(String prefix) {
+            boolean flag = false;
+            for (String string : map.keySet()) {
+                 if (string.startsWith(prefix)) flag = true;
+            }
+            return flag;
+        }
+    }
 
     /**
      * Course Schedule
