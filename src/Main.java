@@ -4,16 +4,38 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println(findKthLargest(new int[]{
+                3,3,3,3,4,3,3,3,3
+        },1));
+    }
+    /**
+     *  Kth Largest Element in an Array
+     * @param nums  整数数组
+     * @param k     正整数
+     * @return 第k大的数          时间复杂度要求O(n) --思想 ：快速选择
+     */
+    public static int findKthLargest(int[] nums, int k) {
+        List<Integer> list = new ArrayList<>();
+        for (int num : nums) {
+            list.add(num);
+        }
+        return largest(list,k);
+    }
 
-        Trie trie = new Trie();
-        trie.insert("apple");
-        System.out.println(trie.search("apple"));   // 返回 True
-        System.out.println(trie.search("app"));     // 返回 False
-        System.out.println(trie.startsWith("app")); // 返回 True
-        trie.insert("app");
-        System.out.println(trie.search("app"));     // 返回 True
-
-
+    public static  int largest(List<Integer>list,int k){
+        Random random = new Random();
+        int incur = list.get(random.nextInt(list.size()));
+        List<Integer> big = new ArrayList<>();
+        List<Integer> small = new ArrayList<>();
+        List<Integer> equal = new ArrayList<>();
+        for (Integer i : list) {
+            if (i < incur) small.add(i);
+            if (i > incur) big.add(i);
+            if (i == incur) equal.add(i);
+        }
+        if (k <= big.size()) return largest(big,k);
+        if (list.size() - small.size() < k) return  largest(small,k - list.size() + small.size());
+        return  incur;
     }
 
 
