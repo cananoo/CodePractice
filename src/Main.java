@@ -4,10 +4,77 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(findKthLargest(new int[]{
-                3,3,3,3,4,3,3,3,3
-        },1));
+//Input: matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+
+     char[][] matrix = {{'1','0','1','0','0'},
+                        {'1','0','1','1','1'},
+                        {'1','1','1','1','1'},
+                        {'1','0','0','1','0'}};
+        System.out.println(maximalSquare2(matrix));
     }
+
+
+    /**
+     * Maximal Square
+     * @param matrix  二维字符数组
+     * @return 最大正方形面积    (动态规划)
+     */
+    public static int maximalSquare2(char[][] matrix) {
+        int maxArea = 0;
+        int row = matrix.length;
+        int col = matrix[0].length;
+        if (row == 0) return maxArea;
+        int[][] dp  = new int[row + 1][col + 1];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col ; j++) {
+                if (matrix[i][j] == '1'){
+                 dp[i + 1][j + 1]  = Math.min(Math.min(dp[i][j+1],dp[i+1][j]),dp[i][j]) + 1 ;
+                 maxArea = Math.max(maxArea, dp[i+1][j+1] * dp[i+1][j+1]);
+
+                }
+            }
+        }
+        return  maxArea;
+    }
+    //(暴力超时.. 76/78)
+    public static int maximalSquare(char[][] matrix) {
+        int maxArea = 0;
+       int row = matrix.length;
+       if (row == 0) return maxArea;
+       int column = matrix[0].length;
+       int max = Math.min(row,column);
+       // 正方形宽度
+       for (int i = max; i > 0; i--) {
+           // 纵向移动
+             int moveToDown = row - i + 1;
+           // 横向移动
+             int moveToRight = column - i + 1;
+           for (int j = 0; j < moveToDown; j++) {
+               for (int k = 0; k < moveToRight; k++) {
+                   boolean flag = true;
+
+                   for (int l = j; l < i + j; l++) {
+                       for (int m = k; m < k + i; m++) {
+                           if (matrix[l][m] == '0') {
+                               flag = false;
+                               break;
+                           }
+                       }
+                       if (!flag) break;
+                   }
+                   if (flag){
+                       maxArea = i * i;
+                       break;
+                   }
+               }
+
+               if (maxArea != 0) break;
+           }
+           if (maxArea != 0) break;
+       }
+       return maxArea;
+    }
+
     /**
      *  Kth Largest Element in an Array
      * @param nums  整数数组
