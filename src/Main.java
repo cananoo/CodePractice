@@ -13,6 +13,22 @@ public class Main {
         System.out.println(maximalSquare2(matrix));
     }
 
+    /**
+     * Invert Binary Tree
+     * @param root 二叉树根节点
+     * @return 反转后的二叉树根节点
+     */
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) return null;
+        invertTree(root.left);
+        invertTree(root.right);
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        root.left = right;
+        root.right = left;
+        return root;
+    }
+
 
     /**
      * Maximal Square
