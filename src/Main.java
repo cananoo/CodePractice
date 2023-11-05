@@ -4,14 +4,38 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//Input: matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+//head = [1,2,2,1]
 
-     char[][] matrix = {{'1','0','1','0','0'},
-                        {'1','0','1','1','1'},
-                        {'1','1','1','1','1'},
-                        {'1','0','0','1','0'}};
-        System.out.println(maximalSquare2(matrix));
+        ListNode head = new ListNode(1);
+        ListNode head2 = new ListNode(2);
+        ListNode head3 = new ListNode(2);
+        ListNode head4 = new ListNode(1);
+        head.next = head2;
+        head2.next = head3;
+        head3.next = head4;
+        System.out.println(isPalindrome(head));
     }
+
+    /**
+     * Palindrome Linked List
+     * @param head 链表头节点
+     * @return 是否是回文链表
+     */
+    public static boolean isPalindrome(ListNode head) {
+        Stack<Integer> stack = new Stack();
+        ListNode temp = head;
+        while (temp != null){
+            stack.push(temp.val);
+            temp = temp.next;
+        }
+        while (head!=null){
+
+          if (head.val != stack.pop()) return false;
+            head = head.next;
+        }
+        return  true;
+    }
+
 
     /**
      * Invert Binary Tree
