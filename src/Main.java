@@ -4,17 +4,75 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//head = [1,2,2,1]
+//Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
 
-        ListNode head = new ListNode(1);
-        ListNode head2 = new ListNode(2);
-        ListNode head3 = new ListNode(2);
-        ListNode head4 = new ListNode(1);
-        head.next = head2;
-        head2.next = head3;
-        head3.next = head4;
-        System.out.println(isPalindrome(head));
+
+        TreeNode root = new TreeNode(3);
+        TreeNode root1 = new TreeNode(5);
+        TreeNode root2 = new TreeNode(1);
+        TreeNode root3 = new TreeNode(6);
+        TreeNode root4 = new TreeNode(2);
+        TreeNode root5 = new TreeNode(0);
+        TreeNode root6 = new TreeNode(8);
+        TreeNode root7 = new TreeNode(7);
+        TreeNode root8 = new TreeNode(4);
+           root.left = root1;
+              root.right = root2;
+        root1.left = root3;
+        root1.right = root4;
+        root2.left = root5;
+        root2.right = root6;
+           root4.left = root7;
+           root4.right = root8;
+        System.out.println(lowestCommonAncestor(root,root1,root8).val);
+
     }
+
+
+    /**
+     * Lowest Common Ancestor of a Binary Tree
+     * @param root 二叉树根节点
+     * @param p 二叉树节点
+     * @param q 二叉树节点
+     * @return 二叉树最近公共祖先节点
+     */
+    public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        List<TreeNode> pPath = new ArrayList<>();
+        List<TreeNode> qPath = new ArrayList<>();
+        findPath(root, p, pPath);
+        findPath(root, q, qPath);
+        for (int i = 0; i < pPath.size(); i++) {
+            for (int j = 0; j < qPath.size(); j++) {
+                if (pPath.get(i) == qPath.get(j)) {
+                    return pPath.get(i);
+                }
+            }
+        }
+        return null;
+    }
+    public static Boolean findPath(TreeNode root ,TreeNode target,List<TreeNode> path){
+        if (root == null ) return false;
+        if (root.val == target.val) {
+            path.add(root);
+            return true;
+        }
+        if (findPath(root.left,target,path)) {
+            path.add(root);
+            return true;
+        }
+        if (findPath(root.right,target,path)) {
+            path.add(root);
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+
+
+
 
     /**
      * Palindrome Linked List
