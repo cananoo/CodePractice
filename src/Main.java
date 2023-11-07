@@ -4,30 +4,30 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
-
-
-        TreeNode root = new TreeNode(3);
-        TreeNode root1 = new TreeNode(5);
-        TreeNode root2 = new TreeNode(1);
-        TreeNode root3 = new TreeNode(6);
-        TreeNode root4 = new TreeNode(2);
-        TreeNode root5 = new TreeNode(0);
-        TreeNode root6 = new TreeNode(8);
-        TreeNode root7 = new TreeNode(7);
-        TreeNode root8 = new TreeNode(4);
-           root.left = root1;
-              root.right = root2;
-        root1.left = root3;
-        root1.right = root4;
-        root2.left = root5;
-        root2.right = root6;
-           root4.left = root7;
-           root4.right = root8;
-        System.out.println(lowestCommonAncestor(root,root1,root8).val);
+        System.out.println(Integer.toBinaryString(500));
 
     }
 
+
+    /**
+     * Product of Array Except Self
+     * @param nums 整数数组
+     * @return 除自身外数组的乘积       (开始没有思路--看了题解茅塞顿开) -- 要求O（n）--不能使用除法
+     */
+    public int[] productExceptSelf(int[] nums) {
+        int k = 1;
+        int[] res = new int[nums.length];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = k;
+            k *= nums[i];
+        }
+        k  = 1;
+        for (int i = res.length - 1; i >= 0; i--) {
+            res[i] *= k;
+            k *= nums[i];
+        }
+return res;
+    }
 
     /**
      * Lowest Common Ancestor of a Binary Tree
