@@ -4,8 +4,69 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(Integer.toBinaryString(500));
+        System.out.println(Arrays.toString(maxSlidingWindow2(new int[]{-6,-10,-7,-1,-9,9,-8,-4,10,-5,2,9,0,-7,7,4,-2,-10,8,7},7)));
 
+    }
+
+
+    /**
+     * Sliding Window Maximum
+     * @param nums   整数数组
+     * @param k     正整数
+     * @return 滑动窗口最大值数组
+     *
+     * 思路:  使用暴力法，当滑动窗口滑出去的左侧元素为最大值时，无法找到新的滑动窗口的最大值，只能逐个遍历，找到新的最大值.
+     *       故可改用双向队列 -- 不断记录滑动时最大的元素列表 --按递减的方式存储 --每轮只需要取列表首元素即可（提前是元素索引未出窗口，否则换下一个）
+     */
+    public static int[] maxSlidingWindow2(int[] nums, int k) {
+        if (nums == null || nums.length <2) return nums;
+        LinkedList<Integer> queue = new LinkedList<>();
+        int[] res = new int[nums.length - k + 1];
+        for (int i = 0; i < nums.length; i++) {
+            if (queue.isEmpty() || nums[i] <=  nums[queue.peekLast()]) {
+                queue.add(i);
+            }else {
+                while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i]) {
+                    queue.pollLast();
+                }
+                queue.add(i);
+            }
+            // 判断首位是否还在滑动窗口内
+            if (queue.peek() < i - k + 1) queue.poll();
+            // 滑动窗口形成
+            if (i + 1 >= k){
+                res[i + 1 - k] = nums[queue.peek()];
+            }
+        }
+      return  res;
+    }
+
+    // 超时(49/51)
+    public static int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length - k + 1;
+       int[] res = new int[n];
+       int max = Integer.MIN_VALUE;
+        for (int i = 0; i < k; i++) {
+            if (nums[i] > max) max=nums[i];
+        }
+        res[0] = max;
+        for (int i = 1; i < n ; i++) {
+            if (nums[i-1]<max && max >= nums[i+k-1]){
+                res[i] = max;
+                continue;
+            }
+            if (nums[i-1]<max && max < nums[i+k-1]){
+                res[i] = nums[i+k-1];
+                max =  nums[i+k-1];
+                continue;
+            }
+            max = Integer.MIN_VALUE;
+            for (int j = i; j < i+k; j++) {
+                if (max < nums[j]) max = nums[j];
+            }
+            res[i] = max;
+        }
+        return res;
     }
 
 
