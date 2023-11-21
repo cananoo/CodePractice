@@ -2,10 +2,10 @@
 
 import java.util.*;
 
-public class Main {
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(maxSlidingWindow2(new int[]{-6,-10,-7,-1,-9,9,-8,-4,10,-5,2,9,0,-7,7,4,-2,-10,8,7},7)));
+public class LeecodeClassic100 {
 
+    public static void main(String[] args) {
+        
     }
 
 
