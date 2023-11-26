@@ -3,8 +3,45 @@ import java.util.Scanner;
 public class BuleBridgeCup {
     public static void main(String[] args) {
 
-        bun();
     }
+
+
+
+    /**
+ *蛇形填数
+ */
+public void fillNumbers(){
+    int res = 0;
+    int last = 0;
+    int count =1;
+    for (int i = 0; i < 39; i++) {
+        if (i == 38) {
+            last = (count/2)+1;
+            break;
+        }
+        res += count++;
+        System.out.println(res);
+    }
+    System.out.println(res + last);
+}
+
+
+    /**
+     * 门牌制作
+     */
+    public void doorCard(){
+        int count = 0;
+        for (int i = 1; i <= 2020; i++) {
+            String str = String.valueOf(i);
+            for (int j = 0; j < str.length(); j++) {
+                if (str.charAt(j) == '2') {
+                    count++;
+                }
+            }
+        }
+        System.out.println(count);
+    }
+
 
     /**
      * 包子凑数
@@ -65,6 +102,4 @@ public class BuleBridgeCup {
             if (a % b == 0) return b;
            return gcd(b,a%b);
         }
-
-
 }
