@@ -3,77 +3,8 @@ import java.util.*;
 public class BuleBridgeCup {
     public static void main(String[] args) {
 
-        Map<Character, List<Character>> map = new HashMap<>();
-        map.put('a',Arrays.asList('b','f'));
-        map.put('b',Arrays.asList('c','g'));
-        map.put('c',Arrays.asList('d','g'));
-        map.put('d',Arrays.asList('e'));
-        map.put('e',Arrays.asList('f','g'));
-        map.put('f',Arrays.asList('g'));
-        map.put('g',Arrays.asList());
-
-        Set<Set<Character>> sets = new HashSet<>();
-        for (Character c : map.keySet()) {
-            Set<Set<Character>> sets1 = sevenSegments(map, c);
-               sets.addAll(sets1);
-        }
-
-        // 同层合并
-        Character[] chars = new Character[]{'a','b','c','d','e','f','g'};
-        for (int i = chars.length-1; i >= 0 ; i--) {
-            List<Character> characters = map.get(chars[i]);
-             if (characters.size() == 2) {
-                 Set<Set<Character>> temp1 = new HashSet<>();
-                 Character ch  = chars[i];
-                 // 查找包含字符1的所有序列
-                 for (Set<Character> set : sets) {
-                     if (set.contains(ch)) {
-                         Set<Character> newtemp = new HashSet<>(set);
-                         temp1.add(newtemp);
-                     }
-                 }
-                 Set<Set<Character>> temp2 = new HashSet<>();
-                 Character ch2  = characters.get(0);
-                 // 查找包含字符2的所有序列
-                 for (Set<Character> set : sets) {
-                     if (set.contains(ch2)) {
-                         Set<Character> newtemp = new HashSet<>(set);
-                         temp2.add(newtemp);
-                     }
-                 }
-
-                 Set<Set<Character>> temp3 = new HashSet<>();
-                 Character ch3  = characters.get(1);
-                 // 查找包含字符2的所有序列
-                 for (Set<Character> set : sets) {
-                     if (set.contains(ch3)) {
-                         Set<Character> newtemp = new HashSet<>(set);
-                         temp3.add(newtemp);
-                     }
-                 }
-
-                 // 合并子序列
-                 for (Set<Character> set : temp1) {
-                     for (Set<Character> characterSet : temp2) {
-                             Set<Character> newtemp = new HashSet<>(set);
-                             Set<Character> newtemp2 = new HashSet<>(characterSet);
-                             newtemp.addAll(newtemp2);
-                             sets.add(newtemp);
-                     }
-                 }
-                 for (Set<Character> set : temp1) {
-                     for (Set<Character> characterSet : temp3) {
-                         Set<Character> newtemp = new HashSet<>(set);
-                         Set<Character> newtemp3 = new HashSet<>(characterSet);
-                         newtemp.addAll(newtemp3);
-                         sets.add(newtemp);
-                     }
-                 }
-             }
-        }
-        System.out.println(sets);
-        System.out.println(sets.size());
     }
+
 
     /**
      * 七段码
@@ -98,6 +29,81 @@ public class BuleBridgeCup {
 
         return sets;
     }
+    /**
+     *   public static void main(String[] args) {
+     *
+     *         Map<Character, List<Character>> map = new HashMap<>();
+     *         map.put('a',Arrays.asList('b','f'));
+     *         map.put('b',Arrays.asList('c','g'));
+     *         map.put('c',Arrays.asList('d','g'));
+     *         map.put('d',Arrays.asList('e'));
+     *         map.put('e',Arrays.asList('f','g'));
+     *         map.put('f',Arrays.asList('g'));
+     *         map.put('g',Arrays.asList());
+     *
+     *         Set<Set<Character>> sets = new HashSet<>();
+     *         for (Character c : map.keySet()) {
+     *             Set<Set<Character>> sets1 = sevenSegments(map, c);
+     *                sets.addAll(sets1);
+     *         }
+     *
+     *         // 同层合并
+     *         Character[] chars = new Character[]{'a','b','c','d','e','f','g'};
+     *         for (int i = chars.length-1; i >= 0 ; i--) {
+     *             List<Character> characters = map.get(chars[i]);
+     *              if (characters.size() == 2) {
+     *                  Set<Set<Character>> temp1 = new HashSet<>();
+     *                  Character ch  = chars[i];
+     *                  // 查找包含字符1的所有序列
+     *                  for (Set<Character> set : sets) {
+     *                      if (set.contains(ch)) {
+     *                          Set<Character> newtemp = new HashSet<>(set);
+     *                          temp1.add(newtemp);
+     *                      }
+     *                  }
+     *                  Set<Set<Character>> temp2 = new HashSet<>();
+     *                  Character ch2  = characters.get(0);
+     *                  // 查找包含字符2的所有序列
+     *                  for (Set<Character> set : sets) {
+     *                      if (set.contains(ch2)) {
+     *                          Set<Character> newtemp = new HashSet<>(set);
+     *                          temp2.add(newtemp);
+     *                      }
+     *                  }
+     *
+     *                  Set<Set<Character>> temp3 = new HashSet<>();
+     *                  Character ch3  = characters.get(1);
+     *                  // 查找包含字符2的所有序列
+     *                  for (Set<Character> set : sets) {
+     *                      if (set.contains(ch3)) {
+     *                          Set<Character> newtemp = new HashSet<>(set);
+     *                          temp3.add(newtemp);
+     *                      }
+     *                  }
+     *
+     *                  // 合并子序列
+     *                  for (Set<Character> set : temp1) {
+     *                      for (Set<Character> characterSet : temp2) {
+     *                              Set<Character> newtemp = new HashSet<>(set);
+     *                              Set<Character> newtemp2 = new HashSet<>(characterSet);
+     *                              newtemp.addAll(newtemp2);
+     *                              sets.add(newtemp);
+     *                      }
+     *                  }
+     *                  for (Set<Character> set : temp1) {
+     *                      for (Set<Character> characterSet : temp3) {
+     *                          Set<Character> newtemp = new HashSet<>(set);
+     *                          Set<Character> newtemp3 = new HashSet<>(characterSet);
+     *                          newtemp.addAll(newtemp3);
+     *                          sets.add(newtemp);
+     *                      }
+     *                  }
+     *              }
+     *         }
+     *         System.out.println(sets);
+     *         System.out.println(sets.size());
+     *     }
+     */
 
 
     /**

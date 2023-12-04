@@ -5,8 +5,36 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        
+        //matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
+        int[][] matrix = {{1,4,7,11,15},
+                          {2,5,8,12,19},
+                          {3,6,9,16,22},
+                          {10,13,14,17,24},
+                          {18,21,23,26,30}};
+        int target = 5;
+        System.out.println(searchMatrix(matrix,target));
+
     }
+
+    /**
+     * Search a 2D Matrix II
+     * @param matrix  二维整数数组
+     * @param target    整数
+     * @return  是否存在
+     */
+    public static boolean searchMatrix(int[][] matrix, int target) {
+        if (matrix.length == 0) return false;
+        int raw = matrix[0].length;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < raw; j++) {
+                if (matrix[i][j] == target) return true;
+                if (matrix[i][j] > target) raw = j;
+            }
+            if (raw == 0) break;
+        }
+        return false;
+    }
+
 
 
     /**
