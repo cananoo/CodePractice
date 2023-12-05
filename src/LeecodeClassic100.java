@@ -5,15 +5,53 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        //matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
-        int[][] matrix = {{1,4,7,11,15},
-                          {2,5,8,12,19},
-                          {3,6,9,16,22},
-                          {10,13,14,17,24},
-                          {18,21,23,26,30}};
-        int target = 5;
-        System.out.println(searchMatrix(matrix,target));
+        System.out.println(numSquares(13));
+    }
 
+
+
+    /**
+     * Perfect Squares
+     * @param n 整数
+     * @return 最少的完全平方数的个数
+     */
+    // 记忆Map
+   static Map<Integer,Integer> numSquraresMap = new HashMap<>();
+   static Map<Integer,Boolean> mapToSquare = new HashMap<>();
+    public static int numSquares(int n) {
+        if (mapToSquare.get(n) != null && mapToSquare.get(n)) return 1;
+        if (isPerfectSquare(n)) {
+            mapToSquare.put(n,true);
+            return  1;
+        }
+        int res = Integer.MAX_VALUE;
+        // 循环次数
+        int num =  n % 2 == 0 ? n/2 : n/2 + 1 ;
+        for (int i = 1; i <= num; i++) {
+            int p1 = 0;
+            int p2 = 0;
+            if (numSquraresMap.containsKey(i) ) {
+                p1 = numSquraresMap.get(i);
+            }else {
+                p1 =  numSquares(i);
+                numSquraresMap.put(i, p1);
+            }
+            if (numSquraresMap.containsKey(n - i)) {
+                p2 = numSquraresMap.get(n - i);
+            }else {
+                p2 =  numSquares(n - i);
+                numSquraresMap.put(n - i, p2);
+            }
+            res = Math.min(res,p1 + p2);
+        }
+        numSquraresMap.put(n,res);
+        return res;
+    }
+    //判断一个数是否为完全平方数
+    public static boolean isPerfectSquare(int n){
+        double pow = Math.pow(n, 0.5);
+        double floor = Math.floor(pow);
+        return  Math.pow(floor,2) == n;
     }
 
     /**
