@@ -5,10 +5,28 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(numSquares(13));
+       int[] nums = new int[]{0,1,0,3,12};
+        moveZeroes(nums);
+        System.out.println(Arrays.toString(nums));
     }
 
 
+    /**
+     * move zeros
+     * @param nums 整数数组
+     */
+    public static void moveZeroes(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < nums.length ; i++){
+            if (nums[i] != 0) {
+                list.add(nums[i]);
+                nums[i] = 0;
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            nums[i] = list.get(i);
+        }
+    }
 
     /**
      * Perfect Squares
