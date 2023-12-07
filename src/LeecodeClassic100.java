@@ -5,11 +5,49 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-       int[] nums = new int[]{0,1,0,3,12};
-        moveZeroes(nums);
-        System.out.println(Arrays.toString(nums));
+       int[] nums = new int[]{3,1,3,4,2};
+        System.out.println(findDuplicate2(nums));
     }
 
+    /**
+     * Find the Duplicate Number
+     * @param nums 整数数组
+     * @return 重复的数
+     */
+        //https://zhuanlan.zhihu.com/p/102298178 妙！
+        public static int findDuplicate2(int[] nums) {
+            int slow = 0;
+            int fast = 0;
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+            while (slow != fast) {
+                slow = nums[slow];
+                fast = nums[nums[fast]];
+            }
+            fast = 0;
+            while (slow != fast){
+                slow = nums[slow];
+                fast = nums[fast];
+            }
+            return slow;
+        }
+
+
+    // 超时 54/58
+    public static int findDuplicate(int[] nums) {
+        int n = nums.length - 1;
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            int temp = nums[i];
+            for (int j = i + 1; j < nums.length; j++) {
+                if (temp == nums[j]) {
+                    res = temp;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
 
     /**
      * move zeros
