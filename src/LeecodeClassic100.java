@@ -5,8 +5,123 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-       int[] nums = new int[]{3,1,3,4,2};
-        System.out.println(findDuplicate2(nums));
+// root = [3,2,4,3]
+
+        TreeNode root = new TreeNode(3);
+        TreeNode root1 = new TreeNode(2);
+        TreeNode root2 = new TreeNode(4);
+        TreeNode root3 = new TreeNode(3);
+        root.left = root1;
+        root.right = root2;
+        root1.left = root3;
+        System.out.println(serialize2(root));
+        TreeNode deserialize = deserialize2(serialize2(root));
+        System.out.println(deserialize);
+
+    }
+
+
+    /**
+     * Serialize and Deserialize Binary Tree
+     */
+    String res = "";
+    public static String serialize2(TreeNode root) {
+        // 先序遍历 null 用 # 代替
+        if (root == null) return "#";
+        return root.val  + "," + serialize2(root.left)+ "," + serialize2(root.right);
+    }
+
+    public static TreeNode deserialize2(String data) {
+          String[] split = data.split(",");
+            List<String> list = new ArrayList<>();
+            for (int i = 0; i < split.length; i++) {
+                list.add(split[i]);
+            }
+            return reback(list);
+    }
+    public static TreeNode reback(List<String> list){
+        if (list.get(0).equals("#")){
+            list.remove(0);
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.valueOf(list.get(0)));
+        list.remove(0);
+        root.left = reback(list);
+        root.right = reback(list);
+        return root;
+    }
+
+    // 复杂解法
+    // 获取一棵树的最大深度
+    public static int depth(TreeNode node){
+        if (node == null ) return 0;
+        return Math.max(depth(node.left)+1,depth(node.right)+1);
+    }
+
+    // 根据树的高度补全二叉树为完全二叉树
+    public  static TreeNode complimentTree(TreeNode node,int depth,int count){
+        if (depth == count) return node;
+        if (node.left == null && count + 1 <= depth){
+            node.left = new TreeNode(-1001);
+        }
+        if (node.right == null && count + 1 <= depth){
+            node.right = new TreeNode(-1001);
+        }
+        complimentTree(node.left,depth,count+1);
+        complimentTree(node.right,depth,count+1);
+      return node;
+    }
+    public static Map<Integer,List<Integer>> gatherSameLevelToMap(TreeNode root,int count,Map<Integer,List<Integer>> sMap) {
+        if (root == null ) return null;
+        List<Integer> list = sMap.get(count);
+        if (list == null)  {
+            list = new ArrayList<>();
+            sMap.put(count,list);
+        }
+        list.add(root.val);
+        gatherSameLevelToMap(root.left,count+1,sMap);
+        gatherSameLevelToMap(root.right,count+1,sMap);
+
+        return sMap;
+    }
+
+    public static String serialize(TreeNode root) {
+        if (root == null) return null;
+         root = complimentTree(root, depth(root), 1);
+        Map<Integer, List<Integer>> integerListMap = gatherSameLevelToMap(root, 0, new HashMap<>());
+        String serilizedString = "";
+        for (int i = 0; i < integerListMap.size(); i++) {
+            List<Integer> list = integerListMap.get(i);
+            if (i != integerListMap.size() - 1){
+                String string = list.toString();
+                serilizedString += string.substring(1, string.length()-1) + ", ";
+            }else {
+                String string = list.toString();
+                serilizedString += string.substring(1, string.length()-1);
+            }
+        }
+        return serilizedString;
+    }
+    public static TreeNode deserialize(String data) {
+        if (data == null) return null;
+        String[] split = data.split(", ");
+        List<TreeNode> list = new ArrayList<>();
+        for (int i = 0; i < split.length; i++) {
+            if (split[i].equals("-1001")){
+                list.add(null);
+            }else {
+                list.add(new TreeNode(Integer.valueOf(split[i])));
+            }
+        }
+        // 根据 list 构造二叉树
+        for (int i = 0; i < list.size(); i++) {
+             if (list.get(i) != null){
+                 if (i * 2 + 1 < list.size()) list.get(i).left = list.get( i * 2 + 1);
+
+                 if (i * 2 + 2 < list.size()) list.get(i).right = list.get( i * 2 + 2);
+             }
+        }
+        return list.get(0);
     }
 
     /**
