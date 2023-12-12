@@ -5,21 +5,43 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-// root = [3,2,4,3]
-
-        TreeNode root = new TreeNode(3);
-        TreeNode root1 = new TreeNode(2);
-        TreeNode root2 = new TreeNode(4);
-        TreeNode root3 = new TreeNode(3);
-        root.left = root1;
-        root.right = root2;
-        root1.left = root3;
-        System.out.println(serialize2(root));
-        TreeNode deserialize = deserialize2(serialize2(root));
-        System.out.println(deserialize);
-
+        System.out.println(lengthOfLIS(new int[]{1,3,6,7,9,4,10,5,6}));
     }
 
+
+    /**
+     * Longest Increasing Subsequence
+     * @param nums 整数数组
+     * @return 最长递增子序列的长度
+     * @ 解法  用一个Map记录从每个索引开始的最长子序列 递归即可
+     */
+     static  Map<Integer,Integer> lengthOfLISMap = new HashMap<>();
+    public static int lengthOfLIS(int[] nums) {
+      transfer(nums);
+      int max = 1;
+        for (Integer value : lengthOfLISMap.values()) {
+            max = Math.max(max,value);
+        }
+        return max;
+    }
+    public  static  int transfer(int[] nums){
+        if (nums.length == 1) {
+            lengthOfLISMap.put(1,1);
+            return 1;
+        }
+        int res = 1;
+        lengthOfLIS(Arrays.copyOfRange(nums, 1,nums.length));
+        int count = 1;
+        for (int i = 1 ; i < nums.length; i++ ) {
+            if (nums[nums.length - i] > nums[0]){
+                count += lengthOfLISMap.get(i);
+            }
+            if ( count > res)  res = count;
+            count = 1;
+        }
+        lengthOfLISMap.put(nums.length,res);
+        return res;
+    }
 
     /**
      * Serialize and Deserialize Binary Tree
