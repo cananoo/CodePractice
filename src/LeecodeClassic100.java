@@ -5,9 +5,126 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(lengthOfLIS(new int[]{1,3,6,7,9,4,10,5,6}));
+        System.out.println(removeInvalidParentheses2("(a)())()"));
     }
 
+
+    /**
+     * Remove Invalid Parentheses
+     * @param s  字符串
+     * @return 有效的括号字符串列表
+     */
+    public static List<String> removeInvalidParentheses2(String s) {
+        // 先统计需要删除的左括号数和右括号数
+        int left = 0;
+        int right = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') left++;
+            if (s.charAt(i) == ')') {
+                if (left > 0) {
+                    left --;
+                }else right++;
+            }
+        }
+
+        List<String> list = new ArrayList<>();
+        list.add(s);
+        if (left == right && left == 0) return list;
+
+        Set<String> set = new HashSet<>();
+        toDfs(set,s,new StringBuilder(),0,left,right);
+        return new ArrayList<>(set);
+    }
+
+    private static void toDfs(Set<String> set, String s,StringBuilder sb, int i, int left, int right) {
+    if (i == s.length()) {
+        if ( left == 0 && right == 0 && isValidStyle(sb.toString())) {
+        set.add(sb.toString());
+    }
+    return;
+    }
+    if (s.charAt(i) == '('){
+        // 要这个括号
+        sb.append("(");
+        toDfs(set,s,sb,i+1,left,right);
+        sb.deleteCharAt(sb.length()-1);
+        //不要这个括号
+        if (left > 0){
+            toDfs(set,s,sb,i+1,left-1,right);
+        }
+    }else if (s.charAt(i) == ')'){
+        // 要这个括号
+        sb.append(")");
+        toDfs(set,s,sb,i+1,left,right);
+        sb.deleteCharAt(sb.length()-1);
+        //不要这个括号
+           if (right > 0){
+               toDfs(set,s,sb,i+1,left,right-1);
+           }
+    }else {
+        sb.append(s.charAt(i));
+        toDfs(set,s,sb,i+1,left,right);
+        sb.deleteCharAt(sb.length()-1);
+    }
+    }
+
+
+    // 超时
+    static Set<String> validList = new HashSet<>();
+    public static List<String> removeInvalidParentheses(String s) {
+        List<String> tempList = new ArrayList<>();
+        if (isValidStyle(s)) return Arrays.asList(s);
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != '(' && s.charAt(i) != ')'){
+                continue;
+            }
+            String temp = s.substring(0,i) + s.substring(i+1,s.length());
+            if (isValidStyle(temp)) {
+                tempList.add(temp);
+                validList.add(temp);
+            }
+        }
+        if (tempList.isEmpty()){
+            for (int i = 0; i < s.length(); i++) {
+                if (s.charAt(i) != '(' && s.charAt(i) != ')'){
+                    continue;
+                }
+                String temp = s.substring(0,i) + s.substring(i+1,s.length());
+                removeInvalidParentheses(temp);
+            }
+        }
+        int max = 0;
+        for (String string : validList) {
+            if (string.length() > max) max = string.length();
+        }
+        for (Iterator<String> iterator = validList.iterator(); iterator.hasNext(); ) {
+            String next =  iterator.next();
+            if (next.length() < max) iterator.remove();
+        }
+        List<String> res = new ArrayList<>(validList);
+        if (res.isEmpty()){
+            res.add("");
+        }
+        return res;
+    }
+
+    private  static boolean isValidStyle(String temp) {
+        if (!temp.contains( "(") && !temp.contains(")")) return true;
+        if (temp.length() == 0) return true;
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < temp.length(); i++) {
+            if (temp.charAt(i) == '('){
+                stack.push(temp.charAt(i));
+            }else if (temp.charAt(i) == ')'){
+                if (!stack.isEmpty()){
+                    stack.pop();
+                }else {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
 
     /**
      * Longest Increasing Subsequence
