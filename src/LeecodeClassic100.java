@@ -5,9 +5,62 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(removeInvalidParentheses2("(a)())()"));
+        System.out.println(maxProfit4(new int[]{1,2,4,2,5,7,2,4,9,0}));
     }
 
+    /**
+     * Best Time to Buy and Sell Stock with Cooldown
+     * @param prices 股票价格数组
+     * @return 最大利润
+     */
+
+    public static int maxProfit4(int[] prices) {
+        if (prices.length < 2) return 0;
+        int n = prices.length;
+        int[][] dp = new int[n][3];
+        // 不是因为今天卖掉不持股拥有的现金
+        dp[0][0] = 0;
+        // 持股后拥有的现金
+        dp[0][1] = -prices[0];
+        // 因为今天卖掉后不持股所拥有的现金
+        dp[0][2] = 0;
+        for (int i = 1; i < n; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0],dp[i - 1 ][2]);
+            dp[i][1] = Math.max(dp[i - 1][1],dp[i - 1 ][0] - prices[i]);
+            dp[i][2] = dp[i - 1 ][1] + prices[i];
+        }
+        return  Math.max(dp[n-1][0],dp[n-1][2]);
+    }
+
+
+    // 加一个记忆Map 标记在某天买能够得到的最大收益 超时 208/210
+    static Map<Integer,Integer> memory = new HashMap<>();
+    public static int maxProfit3(int[] prices) {
+        if (prices.length < 2) return 0;
+        if (memory.get(prices.length) != null) {
+            return memory.get(prices.length);
+        }
+        // 卖和冻结是一个连续操作
+        int res = 0;
+        int max = 0;
+        for (int i = 0; i < prices.length; i++) {
+            res -= prices[i];
+            int temp = res;
+            for (int j = i + 1; j < prices.length; j++) {
+                res += prices[j];
+                // 卖了之后冻结一天 ，说明如果后面还剩三天则可以再买
+                if (prices.length - j > 3) {
+                        res += maxProfit3(Arrays.copyOfRange(prices, j + 2, prices.length));
+                }
+                if (res > max) max = res;
+                // 回溯-- 不在这天卖
+                res = temp;
+            }
+            memory.put(prices.length,max);
+            res = 0;
+        }
+        return max;
+    }
 
     /**
      * Remove Invalid Parentheses
