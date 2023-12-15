@@ -5,8 +5,62 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(maxProfit4(new int[]{1,2,4,2,5,7,2,4,9,0}));
+        System.out.println(maxCoins2(new int[]{7,9,8,0,7,1,3,5,5,2,3,3}));
     }
+
+    /**
+     * Burst Balloons
+     * @param nums 气球数组
+     * @return 最大硬币数
+     */
+    public static int maxCoins2(int[] nums) {
+      int n = nums.length;
+      int[] arr = new int[nums.length + 2];
+      arr[0] = 1;
+      arr[n + 1] = 1;
+        for (int i = 1; i < arr.length-1; i++) {
+            arr[i] = nums[i - 1];
+        }
+      int[][] dp = new int[n+2][n+2];
+        // 长度
+        for (int len = 3; len <= n + 2; len++) {
+            // 左右区间
+            for (int l = 0; l + len - 1  <= n + 1; l++) {
+                int r  = l + len - 1;
+                for (int k = l + 1; k <= r - 1 ; k++) {
+                    dp[l][r] =  Math.max(dp[l][r],dp[l][k] + dp[k][r] + arr[l] * arr[k] * arr[r]);
+                }
+            }
+        }
+        return  dp[0][n + 1];
+    }
+
+
+
+    // 超时
+    public static int maxCoins(int[] nums) {
+     int n = nums.length;
+       int max = 0;
+        for (int i = 0; i < n; i++) {
+            int count = 0;
+            int left = 1;
+            int right = 1;
+             if (i - 1 >=0 ) left = nums[i - 1];
+             if (i + 1 < n) right = nums[i + 1];
+             count += left * nums[i] * right;
+             int[] arr = new int[n - 1];
+            for (int j = 0; j < i; j++) {
+                arr[j] = nums [j];
+            }
+            for (int j = i + 1 ; j < nums.length ; j++) {
+                arr[j - 1] = nums[j];
+            }
+          count +=  maxCoins(arr);
+            if (count > max) max = count;
+        }
+        return max;
+    }
+
 
     /**
      * Best Time to Buy and Sell Stock with Cooldown
