@@ -5,7 +5,30 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(maxCoins2(new int[]{7,9,8,0,7,1,3,5,5,2,3,3}));
+        System.out.println(coinChange(new int[]{1,2,5},11));
+    }
+
+    /**
+     * Coin Change
+     * @param coins 硬币数组
+     * @param amount 金额
+     * @return 最少硬币数         (动态规划)
+     */
+    public static int coinChange(int[] coins, int amount) {
+        if (coins.length == 0) return -1;
+
+        int[] amountToCoins = new int[amount + 1];
+        amountToCoins[0] = 0;
+        for (int i = 1; i < amountToCoins.length; i++) {
+            int min = Integer.MAX_VALUE;
+            for (int j = 0; j < coins.length; j++) {
+                if (i - coins[j] >= 0 && amountToCoins[i - coins[j]] < min){
+                    min = amountToCoins[i - coins[j]] + 1;
+                }
+            }
+            amountToCoins[i] = min;
+        }
+        return amountToCoins[amount] == Integer.MAX_VALUE ? -1 : amountToCoins[amount];
     }
 
     /**
