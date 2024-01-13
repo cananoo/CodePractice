@@ -5,7 +5,43 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(coinChange(new int[]{1,2,5},11));
+        // root = [3,2,3,null,3,null,1]
+        TreeNode root = new TreeNode(3);
+        TreeNode root1 = new TreeNode(2);
+        TreeNode root2 = new TreeNode(3);
+        TreeNode root3 = new TreeNode(3);
+        TreeNode root4 = new TreeNode(1);
+        root.left = root1;
+        root.right = root2;
+        root1.right = root3;
+        root2.right = root4;
+        System.out.println(rob(root));
+
+    }
+
+
+    /**
+     * House Robber III
+     * @param root  二叉树根节点
+     * @return 最大金额
+     */
+    public static int rob(TreeNode root) {
+        int[] steal = steal(root);
+        return Math.max(steal[0],steal[1]);
+    }
+
+    public static int[] steal(TreeNode root){
+        int[] left = new int[2];
+        int[] right = new int[2];
+        if (root.left != null) left = steal(root.left);
+        if (root.right != null) right = steal(root.right);
+        // 数组第一个参数为此节点不偷，孩子可能偷 第二个参数为此节点偷孩子不偷
+        int[] res = new int[2];
+        // 父亲不偷
+        res[0] = Math.max(left[0] + right[0],Math.max(left[1]+right[1],Math.max(left[1]+right[0],left[0]+right[1])));
+        // 父亲偷
+        res[1] = left[0] + right[0] + root.val;
+        return res;
     }
 
     /**
