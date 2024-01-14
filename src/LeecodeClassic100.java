@@ -5,20 +5,31 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        // root = [3,2,3,null,3,null,1]
-        TreeNode root = new TreeNode(3);
-        TreeNode root1 = new TreeNode(2);
-        TreeNode root2 = new TreeNode(3);
-        TreeNode root3 = new TreeNode(3);
-        TreeNode root4 = new TreeNode(1);
-        root.left = root1;
-        root.right = root2;
-        root1.right = root3;
-        root2.right = root4;
-        System.out.println(rob(root));
-
+        System.out.println(Arrays.toString(countBits(5)));
     }
 
+    /**
+     * Counting Bits
+     * @param n  非负整数
+     * @return 0-n的二进制中1的个数
+     */
+    public static int[] countBits(int n) {
+      int[] res = new int[n + 1];
+        for (int i = 0; i < n + 1; i++) {
+            res[i] = countBit(i);
+        }
+        return res;
+    }
+    public static int countBit(int n){
+        int count = 0;
+        String binaryString = Integer.toBinaryString(n);
+        for (int i = 0; i < binaryString.length(); i++) {
+            if (binaryString.charAt(i) == '1'){
+                count++;
+            }
+        }
+         return count;
+    }
 
     /**
      * House Robber III
