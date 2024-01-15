@@ -5,8 +5,50 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(countBits(5)));
+        System.out.println(Arrays.toString(topKFrequent(new int[]{3,2,3,1,2,4,5,5,6,7,7,8,2,3,1,1,1,10,11,5,6,2,4,7,8,5,6}, 10)));
     }
+
+    /**
+     * Top K Frequent Elements
+     * @param nums 整数数组
+     * @param k 正整数
+     * @return   出现频率前k高的元素
+     */
+    public static int[] topKFrequent(int[] nums, int k) {
+        Map<Integer,Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {
+                map.put(nums[i], map.get(nums[i]) + 1);
+            }else {
+                map.put(nums[i], 1);
+            }
+        }
+        int[] temp = new int[nums.length];
+        int i = 0;
+        for (Integer value : map.values()) {
+            temp[i] = value;
+            i++;
+        }
+        Arrays.sort(temp);
+        int[] res = new int[k];
+        int j = 0;
+        for (int i1 = temp.length - 1; i1 >= 0; i1--) {
+            if (temp[i1] == 0) break;
+            int count = 0;
+            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                if (entry.getValue() == temp[i1]){
+                    count++;
+                    res[j] = entry.getKey();
+                    j++;
+                    if (j >=k ) break;
+                }
+            }
+            i1 -= count - 1;
+            if (j >=k ) break;
+        }
+        return res;
+    }
+
 
     /**
      * Counting Bits
