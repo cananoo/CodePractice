@@ -5,7 +5,56 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(topKFrequent(new int[]{3,2,3,1,2,4,5,5,6,7,7,8,2,3,1,1,1,10,11,5,6,2,4,7,8,5,6}, 10)));
+        System.out.println(decodeString("3[a]2[bc]"));
+    }
+
+
+    /**
+     * Decode String
+     * @param s 字符串
+     * @return 解码后的字符串
+     */
+    public static String decodeString(String s) {
+        Stack<String> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != ']'){
+                stack.push(String.valueOf(s.charAt(i)));
+            }else {
+                String temp = "";
+                while (true){
+                    if (!stack.peek().equals("[")){
+                        temp = stack.pop() + temp;
+                    }else {
+                        stack.pop();
+                        // 数字
+                        String popNum = "";
+                       while (true){
+                           if (!stack.isEmpty()){
+                               String pop = stack.peek();
+                               if (pop.charAt(0) >= '0' && pop.charAt(0) <= '9'){
+                                   popNum = stack.pop() + popNum;
+                               }else {
+                                   break;
+                               }
+                           }else {
+                               break;
+                           }
+                       }
+                        String f = temp;
+                        for (int j = 0; j < Integer.valueOf(popNum) - 1; j++) {
+                            temp += f;
+                        }
+                        stack.push(temp);
+                        break;
+                    }
+                }
+            }
+        }
+        String res = "";
+        while (!stack.isEmpty()){
+            res = stack.pop() + res;
+        }
+        return res;
     }
 
     /**
