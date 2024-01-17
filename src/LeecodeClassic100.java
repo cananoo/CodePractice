@@ -5,9 +5,114 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(decodeString("3[a]2[bc]"));
+//[["a","b"],["c","d"]]
+//values =
+//[1.0,1.0]
+//queries =
+//[["a","c"],["b","d"],["b","a"],["d","c"]]
+
+
+        List<List<String>> equations = new ArrayList<>();
+        List<String> list1 = new ArrayList<>();
+        list1.add("a");
+        list1.add("b");
+        equations.add(list1);
+        List<String> list2 = new ArrayList<>();
+        list2.add("c");
+        list2.add("d");
+        equations.add(list2);
+        double[] values = {1.0,1.0};
+        List<List<String>> queries = new ArrayList<>();
+        List<String> list3 = new ArrayList<>();
+        list3.add("a");
+        list3.add("c");
+        queries.add(list3);
+        List<String> list4 = new ArrayList<>();
+        list4.add("b");
+        list4.add("d");
+        queries.add(list4);
+        List<String> list5 = new ArrayList<>();
+        list5.add("b");
+        list5.add("a");
+        queries.add(list5);
+        List<String> list6 = new ArrayList<>();
+        list6.add("d");
+        list6.add("c");
+        queries.add(list6);
+        double[] doubles = calcEquation(equations, values, queries);
+        for (double aDouble : doubles) {
+            System.out.println(aDouble);
+        }
     }
 
+
+    /**
+     * Evaluate Division
+     * @param equations 除法表达式
+     * @param values 除法表达式结果
+     * @param queries 除法表达式
+     * @return 除法表达式结果
+     */
+    public static double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        Map<String,Integer> strToIntMap = new HashMap<>();
+        int capability =  0;
+        for (List<String> equation : equations) {
+            for (String string : equation) {
+                if (!strToIntMap.containsKey(string)){
+                    capability++;
+                    strToIntMap.put(string,capability - 1);
+                }
+            }
+        }
+        double[][] paths = new double[capability][capability];
+        for (int i = 0; i < capability; i++) {
+            paths[i][i] = 1;
+        }
+        int i = 0;
+        for (List<String> equation : equations) {
+            Integer start = strToIntMap.get(equation.get(0));
+            Integer end = strToIntMap.get(equation.get(1));
+            paths[start][end] = values[i];
+            paths[end][start] = 1 / values[i];
+            i++;
+        }
+        // 开始解决问题
+        double[] res = new double[queries.size()];
+        int count = 0;
+        for (List<String> query : queries) {
+            boolean[][] isVisited = new boolean[capability][capability];
+            Integer start = strToIntMap.get(query.get(0));
+            Integer end = strToIntMap.get(query.get(1));
+            if (start == null || end == null) {
+                res[count] = -1.0;
+                count++;
+                continue;
+            }
+            double v = calcEquation(start, end, paths, isVisited);
+            if (v != 0) {
+                res[count] = v;
+            }else {
+                res[count] = -1.0;
+            }
+                count++;
+        }
+        return res;
+    }
+
+    public static  double calcEquation(int a,int b,double[][] paths,boolean[][] isVisited){
+        if (paths[a][b] > 0){
+            return paths[a][b];
+        }
+        double max = 0;
+        for (int i = 0; i < paths.length; i++) {
+            if (paths[a][i] > 0  && !isVisited[a][i]){
+                isVisited[a][i] = true;
+                isVisited[i][a] = true;
+                max = Math.max(max,paths[a][i] * calcEquation(i,b,paths,isVisited));
+            }
+        }
+        return max;
+    }
 
     /**
      * Decode String
