@@ -5,46 +5,68 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-//[["a","b"],["c","d"]]
-//values =
-//[1.0,1.0]
-//queries =
-//[["a","c"],["b","d"],["b","a"],["d","c"]]
+// Input: people = [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]
 
+     int[][] people = {{7,0},{4,4},{7,1},{5,0},{6,1},{5,2}};
 
-        List<List<String>> equations = new ArrayList<>();
-        List<String> list1 = new ArrayList<>();
-        list1.add("a");
-        list1.add("b");
-        equations.add(list1);
-        List<String> list2 = new ArrayList<>();
-        list2.add("c");
-        list2.add("d");
-        equations.add(list2);
-        double[] values = {1.0,1.0};
-        List<List<String>> queries = new ArrayList<>();
-        List<String> list3 = new ArrayList<>();
-        list3.add("a");
-        list3.add("c");
-        queries.add(list3);
-        List<String> list4 = new ArrayList<>();
-        list4.add("b");
-        list4.add("d");
-        queries.add(list4);
-        List<String> list5 = new ArrayList<>();
-        list5.add("b");
-        list5.add("a");
-        queries.add(list5);
-        List<String> list6 = new ArrayList<>();
-        list6.add("d");
-        list6.add("c");
-        queries.add(list6);
-        double[] doubles = calcEquation(equations, values, queries);
-        for (double aDouble : doubles) {
-            System.out.println(aDouble);
+        int[][] res = reconstructQueue(people);
+        for (int i = 0; i < res.length; i++) {
+            System.out.println(Arrays.toString(res[i]));
         }
+
+
     }
 
+
+    /**
+     * Queue Reconstruction by Height
+     * @param people 二维整数数组
+     * @return 重建队列
+     */
+    public static int[][] reconstructQueue(int[][] people) {
+        Arrays.sort(people, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[1] > o2[1]){
+                    return 1;
+                }else if (o1[1] < o2[1]) {
+                    return  - 1;
+                }
+                if (o1[0] > o2[0]){
+                    return 1;
+                }else if (o1[0] < o2[0]){
+                    return -1;
+                }else {
+                    return 0;
+                }
+            }
+        });
+        for (int i = 0; i < people.length; i++) {
+            int count = 0;
+            for (int j = 0; j < i; j++) {
+                if (people[i][0] <= people[j][0]){
+                    count++;
+                }
+            }
+            int num = people[i][1];
+            if (count > num){
+                for (int j = i - 1; j >= 0 ; j--) {
+                    if (people[i][0] <= people[j][0]){
+                        count--;
+                        // 将people[i]插入到j的位置
+                        int[] temp = people[i];
+                        for (int k = i ; k > j; k--) {
+                            people[k] = people[k - 1];
+                        }
+                        people[j] = temp;
+                        i = j;
+                    if (count <= num) break;
+                    }
+                }
+            }
+        }
+        return people;
+    }
 
     /**
      * Evaluate Division
