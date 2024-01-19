@@ -5,16 +5,81 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-// Input: people = [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]
 
-     int[][] people = {{7,0},{4,4},{7,1},{5,0},{6,1},{5,2}};
+        System.out.println(canPartition2(new int[]{23,13,11,7,6,5,5}));
 
-        int[][] res = reconstructQueue(people);
-        for (int i = 0; i < res.length; i++) {
-            System.out.println(Arrays.toString(res[i]));
+
+    }
+
+
+
+
+    /**
+     * Partition Equal Subset Sum
+     * @param nums  整数数组
+     * @return  是否可以分割为两个和相等的子集
+     */
+    //(动态规划)
+    public static boolean canPartition2(int[] nums) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
         }
+        if (sum % 2 != 0) return false;
+        int target = sum / 2;
+        boolean[][] dp = new boolean[nums.length][target + 1];
+        if (nums[0] <= target){
+            dp[0][nums[0]] = true;
+        }
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 0; j <=target; j++) {
+                dp[i][j] = dp[i - 1][j];
+                //修正数据
+                if (nums[i] == j ){
+                    dp[i][j] = true;
+                    continue;
+                }
+                if (nums[i] < j){
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];
+                }
+            }
+        }
+        return dp[nums.length - 1][target];
+    }
 
+    // 超时
+    public static boolean canPartition(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        int part1 = 0;
+        for (int i = 0; i < n - 1; i++) {
+            part1 += nums[i];
+        }
+        int part2 = nums[n - 1];
+        if (part1 < part2) return false;
+        if (part1 == part2) return true;
 
+        // 下面是左重右轻的情况，如何调整左右使之平衡呢？
+        // 可以尝试不断给右边加东西，如果出现右重左轻就回溯           // 5 5 6 7 11 13 23    6 7 11 13   5 7 23
+        return adjust(part1,part2,nums,0);
+    }
+
+    private static boolean adjust(int part1, int part2, int[] nums,int index) {
+        boolean flag = false;
+        // 选择
+        part2 += nums[index];
+        part1 -= nums[index];
+        if (part1 == part2) return true;
+        if (index + 1 < nums.length - 1 && adjust(part1,part2,nums,index + 1)) {
+            return true;
+        }
+        //不选择
+        part2 -= nums[index];
+        part1 += nums[index];
+       if (index + 1 < nums.length - 1 && adjust(part1,part2,nums,index + 1)){
+           flag = true;
+       }
+       return flag;
     }
 
 
