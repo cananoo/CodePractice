@@ -5,14 +5,87 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
+ // Input: root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
 
-        System.out.println(canPartition2(new int[]{23,13,11,7,6,5,5}));
+        TreeNode root = new TreeNode(5);
+        TreeNode root1 = new TreeNode(4);
+        TreeNode root2 = new TreeNode(8);
+        TreeNode root3 = new TreeNode(11);
+        TreeNode root4 = new TreeNode(13);
+        TreeNode root5 = new TreeNode(4);
+        TreeNode root6 = new TreeNode(7);
+        TreeNode root7 = new TreeNode(2);
+        TreeNode root8 = new TreeNode(5);
+        TreeNode root9 = new TreeNode(1);
+        root.left = root1;
+        root.right = root2;
+        root1.left = root3;
+        root2.left = root4;
+        root2.right = root5;
+        root3.left = root6;
+        root3.right = root7;
+        root5.left = root8;
+        root5.right = root9;
+        System.out.println(pathSum2(root,22));
 
 
     }
 
 
+    /**
+     * Path Sum III
+     * @param root  二叉树根节点
+     * @param targetSum 整数
+     * @return 路径和等于targetSum的路径数
+     */
+    public static int pathSum2(TreeNode root, int targetSum) {
+        if (root == null) return 0;
+        int res = rootSum(root,targetSum);
+        res += pathSum2(root.left,targetSum);
+        res += pathSum2(root.right,targetSum);
+         return res;
+    }
+    public static int rootSum(TreeNode root, long targetSum){
+        if (root == null) return 0;
+        int res = 0;
+        if (root.val == targetSum) res++;
 
+        res += rootSum(root.left,targetSum -root.val);
+        res += rootSum(root.right,targetSum -root.val);
+        return res;
+    }
+
+    //(超时)
+    public static int pathSum(TreeNode root, int targetSum) {
+        if (root == null) return 0;
+        int count = 0;
+         //遍历所有线路
+        List<Integer> allPath = findAllPath(root);
+        for (Integer i : allPath) {
+            if ( i == targetSum) count++;
+        }
+        if (root.left != null) count += pathSum(root.left,targetSum);
+        if (root.right != null) count += pathSum(root.right,targetSum);
+        return count;
+    }
+    public static List<Integer> findAllPath(TreeNode root){
+        List<Integer> list = new ArrayList<>();
+        if (root == null) return Collections.emptyList();
+        list.add(root.val);
+        if (root.left != null){
+            List<Integer> allPath = findAllPath(root.left);
+            for (Integer i : allPath) {
+                list.add(root.val + i);
+            }
+        }
+        if (root.right != null){
+            List<Integer> allPath = findAllPath(root.right);
+            for (Integer i : allPath) {
+                list.add(root.val + i);
+            }
+        }
+        return list;
+    }
 
     /**
      * Partition Equal Subset Sum
