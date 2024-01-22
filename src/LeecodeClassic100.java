@@ -5,32 +5,55 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
- // Input: root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
-
-        TreeNode root = new TreeNode(5);
-        TreeNode root1 = new TreeNode(4);
-        TreeNode root2 = new TreeNode(8);
-        TreeNode root3 = new TreeNode(11);
-        TreeNode root4 = new TreeNode(13);
-        TreeNode root5 = new TreeNode(4);
-        TreeNode root6 = new TreeNode(7);
-        TreeNode root7 = new TreeNode(2);
-        TreeNode root8 = new TreeNode(5);
-        TreeNode root9 = new TreeNode(1);
-        root.left = root1;
-        root.right = root2;
-        root1.left = root3;
-        root2.left = root4;
-        root2.right = root5;
-        root3.left = root6;
-        root3.right = root7;
-        root5.left = root8;
-        root5.right = root9;
-        System.out.println(pathSum2(root,22));
-
-
+        System.out.println(findAnagrams2("abab", "ab"));
     }
 
+
+    /**
+     * Find All Anagrams in a String
+     * @param s 字符串
+     * @param p 字符串
+     * @return 所有是p的字母异位词的子串的起始索引
+     */
+    public static List<Integer> findAnagrams2(String s, String p) {
+        List<Integer> res = new ArrayList<>();
+        int sN = s.length();
+        int pN = p.length();
+        if (sN < pN) return  res;
+        int[] sCon = new int[26];
+        int[] pCon = new int[26];
+        for (int i = 0; i < pN; i++) {
+            sCon[s.charAt(i) - 'a']++;
+            pCon[p.charAt(i) - 'a']++;
+        }
+        if (Arrays.equals(sCon,pCon)) res.add(0);
+        for (int i = pN; i < sN; i++) {
+            sCon[s.charAt(i - pN) - 'a']--;
+            sCon[s.charAt(i) - 'a']++;
+            if (Arrays.equals(sCon,pCon)) res.add(i - pN + 1);
+        }
+        return res;
+    }
+    //(暴力已经不可取了..)
+        public static List<Integer> findAnagrams(String s, String p) {
+         List<Integer> list = new ArrayList<>();
+         int n = s.length();
+         int m = p.length();
+         int times = n - m + 1;
+            for (int i = 0; i < times; i++) {
+                List<Character> temp = new ArrayList<>();
+                for (int j = i; j < i + m; j++) {
+                     temp.add(s.charAt(j));
+                }
+                for (int i1 = 0; i1 < m; i1++) {
+                    temp.remove((Object)p.charAt(i1));
+                }
+                if (temp.isEmpty()) {
+                    list.add(i);
+                }
+            }
+            return list;
+        }
 
     /**
      * Path Sum III
