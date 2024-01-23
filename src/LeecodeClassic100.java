@@ -5,9 +5,28 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(findAnagrams2("abab", "ab"));
+        System.out.println(findDisappearedNumbers(new int[]{1,1}));
     }
 
+
+    /**
+     * Find All Numbers Disappeared in an Array
+     * @param nums  整数数组
+     * @return  1-n中没有出现在数组中的数
+     */
+    public static List<Integer> findDisappearedNumbers(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        boolean[] is = new boolean[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            is[nums[i] - 1] = true;
+        }
+        for (int i = 0; i < is.length; i++) {
+            if (!is[i]){
+                res.add(i + 1);
+            }
+        }
+        return res;
+    }
 
     /**
      * Find All Anagrams in a String
