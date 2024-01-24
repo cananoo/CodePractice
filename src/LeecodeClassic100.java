@@ -5,9 +5,38 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(findDisappearedNumbers(new int[]{1,1}));
+        System.out.println(hammingDistance(93, 73));
     }
 
+
+    /**
+     * Hamming Distance
+     * @param x 整数
+     * @param y 整数
+     * @return 两个整数的汉明距离
+     */
+    public static int hammingDistance(int x, int y) {
+        String x1 = Integer.toBinaryString(x);
+        String y1 = Integer.toBinaryString(y);
+        int res = 0;
+        if (x >= y) {
+            for (int i = 0; i < x1.length() - y1.length(); i++) {
+                if (x1.charAt(i) != '0') res++;
+            }
+            for (int i = x1.length() - y1.length(); i < x1.length(); i++) {
+                if (x1.charAt(i) != y1.charAt(i - x1.length() + y1.length())) res++;
+            }
+        }else {
+            for (int i = 0; i < y1.length() - x1.length(); i++) {
+                if (y1.charAt(i) != '0') res++;
+            }
+            for (int i = y1.length() - x1.length(); i < y1.length(); i++) {
+                if (y1.charAt(i) != x1.charAt(i - y1.length() + x1.length())) res++;
+            }
+        }
+
+        return res;
+    }
 
     /**
      * Find All Numbers Disappeared in an Array
