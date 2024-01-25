@@ -5,9 +5,31 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(hammingDistance(93, 73));
+        System.out.println(findTargetSumWays(new int[]{1},1));
     }
 
+
+    /**
+     *  Target Sum
+     * @param nums 整数数组
+     * @param target 整数
+     * @return 有几种方法可以得到target
+     */
+    static int resN = 0;
+    public static int findTargetSumWays(int[] nums, int target) {
+        return traceBack(nums,0,0,target);
+    }
+
+    public static int traceBack(int[] nums,int index,int total,int target){
+        if (index == nums.length  && total == target ) return -1;
+        if (index == nums.length) return -2;
+        total += nums[index];
+        if (traceBack(nums,index + 1,total,target) == -1) resN++;
+        total -= (2 * nums[index]);
+        if (traceBack(nums,index + 1,total,target) == -1) resN++;
+
+        return resN;
+    }
 
     /**
      * Hamming Distance
