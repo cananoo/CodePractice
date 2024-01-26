@@ -5,9 +5,37 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(findTargetSumWays(new int[]{1},1));
+
     }
 
+
+    /**
+     * Convert BST to Greater Tree
+     * @param root 二叉树根节点
+     * @return 二叉搜索树转换为累加树
+     */
+    public TreeNode convertBST(TreeNode root) {
+        if (root == null) return null;
+        TreeNode right = convertBST(root.right);
+        TreeNode temp = right;
+         if (temp != null){
+             while (temp.left != null){
+                 temp = temp.left;
+             }
+         }
+        root.val += temp == null ? 0 : temp.val;
+        TreeNode left = convertBST(root.left);
+        if (left != null) {
+            convert(left,root.val);
+        }
+        return root;
+    }
+    public void convert(TreeNode root,int num){
+        if (root == null) return;
+        root.val += num;
+        convert(root.right,num);
+        convert(root.left,num);
+    }
 
     /**
      *  Target Sum
