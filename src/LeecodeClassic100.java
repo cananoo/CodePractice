@@ -5,10 +5,43 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
+ //       root = [1,2,3,4,5]
 
+        TreeNode root = new TreeNode(1);
+        TreeNode root2 = new TreeNode(2);
+        TreeNode root3 = new TreeNode(3);
+        root.left = root2;
+        root.right = root3;
+        TreeNode root4 = new TreeNode(4);
+        TreeNode root5 = new TreeNode(5);
+        root2.left = root4;
+        root2.right = root5;
+        System.out.println(diameterOfBinaryTree(root));
     }
 
-
+    /**
+     * Diameter of Binary Tree
+     * @param root 二叉树根节点
+     * @return 二叉树的直径
+     */
+    static int diameter;
+    public static int diameterOfBinaryTree(TreeNode root) {
+         if (root == null) return 0;
+        int left = depth(root.left);
+        int right = depth(root.right);
+        diameter = Math.max(diameter,left + right);
+        diameterOfBinaryTree(root.left);
+        diameterOfBinaryTree(root.right);
+      return diameter;
+    }
+    /*
+    *
+    // 获取一棵树的最大深度
+    public static int depth(TreeNode node){
+        if (node == null ) return 0;
+        return Math.max(depth(node.left)+1,depth(node.right)+1);
+    }
+    * */
     /**
      * Convert BST to Greater Tree
      * @param root 二叉树根节点
