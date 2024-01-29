@@ -6,17 +6,39 @@ public class LeecodeClassic100 {
 
     public static void main(String[] args) {
  //       root = [1,2,3,4,5]
+        System.out.println(subarraySum(new int[]{-1,-1,1}, 0));
+    }
 
-        TreeNode root = new TreeNode(1);
-        TreeNode root2 = new TreeNode(2);
-        TreeNode root3 = new TreeNode(3);
-        root.left = root2;
-        root.right = root3;
-        TreeNode root4 = new TreeNode(4);
-        TreeNode root5 = new TreeNode(5);
-        root2.left = root4;
-        root2.right = root5;
-        System.out.println(diameterOfBinaryTree(root));
+
+    /**
+     * Subarray Sum Equals K
+     * @param nums 整数数组
+     * @param k 整数
+     * @return 和为k的连续子数组的个数
+     */
+    public static int subarraySum(int[] nums, int k) {
+        int n = nums.length;
+        int sum = 0;
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            sum += nums[i];
+        }
+        if (sum == k) count++;
+        int temp = sum;
+        for (int i = n - 1; i > 0; i--) {
+            temp -= nums[i];
+            if (temp == k) count++;
+        }
+        for (int i = 0; i < n - 1; i++) {
+             sum = sum - nums[i];
+            if (sum == k) count++;
+            int  temp2 = sum;
+            for (int j = n - 1; j >i + 1; j--) {
+                temp2 -= nums[j];
+                if (temp2  == k) count++;
+            }
+        }
+     return count;
     }
 
     /**
