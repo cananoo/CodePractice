@@ -5,10 +5,43 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
- //       root = [1,2,3,4,5]
-        System.out.println(subarraySum(new int[]{-1,-1,1}, 0));
+
+        System.out.println(findUnsortedSubarray(new int[]{
+                1,2,3,4
+        }));
     }
 
+
+    /**
+     * Shortest Unsorted Continuous Subarray
+     * @param nums 整数数组
+     * @return 最短的连续子数组的长度
+     */
+    public static int findUnsortedSubarray(int[] nums) {
+        int[] copy = Arrays.copyOf(nums, nums.length);
+        Arrays.sort(nums);
+        int n = nums.length;
+        int start = -1;
+        int end = -1;
+        for (int i = 0; i < n; i++) {
+            if (copy[i] != nums[i]) {
+                start = i;
+            break;
+            }
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            if (copy[i] != nums[i]) {
+                end = i;
+                break;
+            }
+        }
+        if (start != -1 || end != -1) {
+            if (start != end) return end - start + 1;
+        }
+
+        return  0;
+
+    }
 
     /**
      * Subarray Sum Equals K
