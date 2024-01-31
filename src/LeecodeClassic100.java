@@ -11,6 +11,43 @@ public class LeecodeClassic100 {
         }));
     }
 
+    /**
+     *  Merge Two Binary Trees
+     * @param root1 二叉树根节点
+     * @param root2 二叉树根节点
+     * @return 合并后的二叉树
+     */
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        if (root1 == null && root2 == null) return null;
+        TreeNode leftTemp = null;
+        TreeNode leftTemp2 = null;
+        TreeNode rightTemp = null;
+        TreeNode rightTemp2 = null;
+        if (root1 != null && root2 != null) {
+            leftTemp = root1.left;
+             leftTemp2 = root2.left;
+             rightTemp = root1.right;
+             rightTemp2 = root2.right;
+            root1 = new TreeNode(root1.val + root2.val);
+        }
+        if (root1 == null) {
+             leftTemp = null;
+             leftTemp2 = root2.left;
+            rightTemp = null;
+            rightTemp2 = root2.right;
+            root1 = new TreeNode(root2.val);
+        }
+        if (root2 == null) {
+            leftTemp = root1.left;
+            leftTemp2 = null;
+             rightTemp = root1.right;
+            rightTemp2 = null;
+        }
+        root1.left = mergeTrees(leftTemp,leftTemp2);
+        root1.right = mergeTrees(rightTemp,rightTemp2);
+        return root1;
+    }
+
 
     /**
      * Shortest Unsorted Continuous Subarray
