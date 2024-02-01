@@ -1,14 +1,37 @@
 
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
+        System.out.println(leastInterval(new char[]{'A', 'A', 'A', 'B', 'B', 'B' }, 2));
+    }
 
-        System.out.println(findUnsortedSubarray(new int[]{
-                1,2,3,4
-        }));
+
+    /**
+     * Task Scheduler
+     * @param tasks 任务数组
+     * @param n 间隔
+     * @return 最短时间
+     */
+    public static int leastInterval(char[] tasks, int n) {
+      int[] num = new int[26];
+        for (char task : tasks) {
+            num[task - 'A']++;
+        }
+        Arrays.sort(num);
+        int max = num[25];
+        int count = 1;
+        for (int i = num.length - 2; i >= 0; i--) {
+            if (num[i] == max) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        return Math.max(tasks.length,(max -1) * (n+1) + count);
     }
 
     /**
