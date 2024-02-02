@@ -6,9 +6,37 @@ import java.util.*;
 public class LeecodeClassic100 {
 
     public static void main(String[] args) {
-        System.out.println(leastInterval(new char[]{'A', 'A', 'A', 'B', 'B', 'B' }, 2));
+        System.out.println(countSubstrings("abc"));
     }
 
+
+    /**
+     * Palindromic Substrings
+     * @param s 字符串
+     * @return  回文子串的个数
+     */
+    public static int countSubstrings(String s) {
+       int res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = s.length(); j > i ; j--) {
+                if (isPalindrome(s.substring(i,j))) res++;
+            }
+        }
+       return res;
+    }
+ /*  是否为回文字串
+     public static boolean isPalindrome(String s){
+        int len = s.length();
+        for (int i = 0; i <=(len/2-1); i++) {
+            if (s.charAt(i) == s.charAt(len-i-1)){
+                continue;
+            }else {
+                return false;
+            }
+        }
+        return true;
+    }
+ * */
 
     /**
      * Task Scheduler
