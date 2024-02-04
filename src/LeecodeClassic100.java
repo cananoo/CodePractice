@@ -1,6 +1,5 @@
 
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class LeecodeClassic100 {
@@ -9,6 +8,31 @@ public class LeecodeClassic100 {
         System.out.println(countSubstrings("abc"));
     }
 
+
+    /**
+     * Daily Temperatures
+     * @param temperatures 温度数组
+     * @return  每天需要等待多少天才能升温
+     */
+    public static int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+          int count = 0;
+          if (i - 1 >= 0 && temperatures[i] == temperatures[i - 1] && res[i - 1] != 0){
+              res[i] = res[i - 1] - 1;
+              continue;
+          }
+            for (int j = i + 1; j < n; j++) {
+                count++;
+                if (temperatures[j] > temperatures[i]) {
+                    res[i] = count;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
 
     /**
      * Palindromic Substrings
