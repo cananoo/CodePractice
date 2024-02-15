@@ -1,23 +1,43 @@
+
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 public class RepeatPractice {
     public static void main(String[] args) {
-   // input  l1 : [9]
 
-        ListNode l1 = new ListNode(9);
-        // l2 : [1,9,9,9,9,9,9,9,9,9]
-
-        ListNode l2 = new ListNode(1,new ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9))))))))));
-
-        ListNode res = addTwoNumbers(l1,l2);
-        while (res != null){
-            System.out.println(res.val);
-            res = res.next;
-        }
+        System.out.println(combinationSum(new int[]{2, 3, 5}, 8));
 
     }
 
+
+
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<Integer> state =  new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(candidates);
+        int start = 0;
+        backTrace(candidates,target,start,state,res);
+        return res;
+    }
+
+     static void backTrace(int[] candidates, int target,int start,List<Integer> state,List<List<Integer>> res){
+          if (target == 0){
+              res.add(new ArrayList<>(state));
+              return;
+          }
+        for (int i = start; i < candidates.length; i++) {
+            start = i;
+            if (target - candidates[i] < 0){
+                break;
+            }
+            state.add(candidates[i]);
+            backTrace(candidates,target - candidates[i],start,state,res);
+            state.remove((Object)candidates[i]);
+        }
+    }
 
     public static int singleNumber(int[] nums) {
         int temp = nums[0];
