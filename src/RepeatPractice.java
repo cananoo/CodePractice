@@ -1,17 +1,39 @@
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class RepeatPractice {
     public static void main(String[] args) {
 
-        System.out.println(combinationSum(new int[]{2, 3, 5}, 8));
+        System.out.println(findKthLargest(new int[]{3, 2, 1, 5, 6, 4}, 2));
 
     }
 
+
+
+    public static int findKthLargest(int[] nums, int k) {
+     List<Integer> list = new ArrayList<>();
+        for (int num : nums) {
+            list.add(num);
+        }
+        return largerK(list,k);
+    }
+
+    private static int largerK(List<Integer> list, int k) {
+        Random random = new Random();
+        int cur = list.get(random.nextInt(list.size()-1));
+        List<Integer> big = new ArrayList<>();
+        List<Integer> small = new ArrayList<>();
+        List<Integer> equal = new ArrayList<>();
+        for (Integer i : list) {
+            if (i == cur) equal.add(i);
+            if (i < cur) small.add(i);
+            if (i > cur) big.add(i);
+        }
+        if (k <= big.size()) return largerK(big,k);
+        if (k > list.size() - small.size()) return largerK(small,k - list.size() + small.size());
+        return cur;
+    }
 
 
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
