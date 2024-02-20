@@ -5,11 +5,28 @@ import java.util.*;
 public class RepeatPractice {
     public static void main(String[] args) {
 
-        System.out.println(findKthLargest(new int[]{3, 2, 1, 5, 6, 4}, 2));
-
+        System.out.println(Arrays.toString(productExceptSelf(new int[]{-1, 1, 0, -3, 3})));
     }
 
 
+
+
+
+    public static int[] productExceptSelf(int[] nums) {
+        int k = 1;
+        int n = nums.length;
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            res[i]  = k;
+            k *= nums[i];
+        }
+        k = 1;
+        for (int i = n - 1; i >=0 ; i--) {
+            res[i] *= k;
+            k *= nums[i];
+        }
+        return res;
+    }
 
     public static int findKthLargest(int[] nums, int k) {
      List<Integer> list = new ArrayList<>();
