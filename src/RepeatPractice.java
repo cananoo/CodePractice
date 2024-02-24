@@ -10,7 +10,23 @@ public class RepeatPractice {
 
 
 
+    public static int numTrees(int n) {
+        if (n == 0) return 0;
 
+        return count(n);
+    }
+
+    public static int count(int n){
+        if (n == 0) return 1;
+        if (n == 1) return 1;
+        int total = 0;
+        int i = 0;
+        while (i < n){
+            total += count(i) * count(n - 1 - i);
+            i++;
+        }
+        return total;
+    }
 
     public static int[] productExceptSelf(int[] nums) {
         int k = 1;
