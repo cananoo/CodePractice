@@ -4,11 +4,32 @@ import java.util.*;
 
 public class RepeatPractice {
     public static void main(String[] args) {
-
-        System.out.println(Arrays.toString(productExceptSelf(new int[]{-1, 1, 0, -3, 3})));
+        System.out.println(maxCoins(new int[]{3, 1, 5, 8}));
     }
 
 
+
+
+
+    public static int maxCoins(int[] nums) {
+        int n = nums.length;
+        int[] arr = new int[n + 2];
+        arr[0] = 1;
+        arr[arr.length - 1] = 1;
+        for (int i = 0; i < nums.length; i++) {
+            arr[i + 1] = nums[i];
+        }
+        int[][] dp = new int[n + 2][ n + 2];
+        for (int len = 3; len <= n + 2; len++) {
+            for (int l = 0; l + len - 1 < n + 2 ; l++) {
+                int r = l + len - 1;
+                for (int k = l + 1; k <= r - 1; k++) {
+                    dp[l][r] = Math.max(dp[l][r],dp[l][k] + dp[k][r] + arr[k] * arr[l] * arr[r]);
+                }
+            }
+        }
+        return dp[0][n + 1];
+    }
 
     public static int numTrees(int n) {
         if (n == 0) return 0;
