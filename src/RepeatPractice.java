@@ -1,6 +1,7 @@
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RepeatPractice {
     public static void main(String[] args) {
@@ -8,7 +9,15 @@ public class RepeatPractice {
     }
 
 
-
+    public static List<List<String>> groupAnagrams(String[] strs) {
+        return new ArrayList<>(Arrays.stream(strs).collect(Collectors.groupingBy(
+                  str -> {
+                      char[] charArray = str.toCharArray();
+                      Arrays.sort(charArray);
+                      return new String(charArray);
+                  }
+                )).values());
+    }
 
 
     public static int maxCoins(int[] nums) {
