@@ -9,6 +9,37 @@ public class RepeatPractice {
     }
 
 
+
+      static class TreeNode {
+         int val;
+          TreeNode left;
+          TreeNode right;
+          TreeNode() {}
+          TreeNode(int val) { this.val = val; }
+          TreeNode(int val, TreeNode left, TreeNode right) {
+              this.val = val;
+              this.left = left;
+              this.right = right;
+          }
+      }
+    public static int rob(TreeNode root) {
+        if (root == null) return 0;
+        int[] res = steal(root);
+        return Math.max(res[0],res[1]);
+    }
+
+    private static int[] steal(TreeNode root) {
+        int[] left = new int[2];
+        int[] right = new int[2];
+        if (root.left != null) left = steal(root.left);
+        if (root.right != null) right = steal(root.right);
+        int[] dp = new int[2];
+        dp[1] = left[0] + right[0] + root.val;
+        dp[0] = Math.max(left[0] + right[0],Math.max(left[1]+right[1],Math.max(left[0]+right[1],left[1] + right[0])));
+        return dp;
+    }
+
+
     public static int minDistance(String word1, String word2) {
         int n = word1.length();
         int n2 = word2.length();
