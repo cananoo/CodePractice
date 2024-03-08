@@ -10,6 +10,23 @@ public class RepeatPractice {
 
 
 
+
+    public static int leastInterval(char[] tasks, int n) {
+        int[] nums = new int[26];
+        for (char task : tasks) {
+            nums[task - 'A'] += 1;
+        }
+        Arrays.sort(nums);
+        int max = nums[25];
+        int count = 1;
+        for (int i = nums.length - 2; i >= 0 ; i--) {
+            if (max == nums[i]){
+                count++;
+            }else break;
+        }
+        return Math.max(tasks.length,(max - 1) * (n + 1) + count);
+    }
+
       static class TreeNode {
          int val;
           TreeNode left;
