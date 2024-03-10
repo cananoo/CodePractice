@@ -11,6 +11,32 @@ public class RepeatPractice {
 
 
 
+    public static String serialize(TreeNode root) {
+        if (root == null) return "#";
+        return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+    }
+
+    public static TreeNode deserialize(String data) {
+        String[] split = data.split(",");
+        List<String> list = new ArrayList<>();
+        for (String s : split) {
+            list.add(s);
+        }
+        return reback(list);
+    }
+
+    private static TreeNode reback(List<String> list) {
+        if (list.get(0).equals("#")){
+            list.remove(0);
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.valueOf(list.get(0)));
+        list.remove(0);
+        root.left = reback(list);
+        root.right = reback(list);
+        return root;
+    }
+
     public static int leastInterval(char[] tasks, int n) {
         int[] nums = new int[26];
         for (char task : tasks) {
