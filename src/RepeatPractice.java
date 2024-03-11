@@ -10,6 +10,61 @@ public class RepeatPractice {
 
 
 
+    public static double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        Map<String,Integer> strToMap = new HashMap<>();
+        int idx = 0;
+        for (List<String> equation : equations) {
+            for (String s : equation) {
+                if (!strToMap.containsKey(s)){
+                    idx++;
+                    strToMap.put(s,idx - 1);
+                }
+            }
+        }
+        double[][] paths = new double[idx][idx];
+        for (int i = 0; i < idx; i++) {
+            paths[i][i] = 1;
+        }
+        int i = 0;
+        for (List<String> equation : equations) {
+            paths[strToMap.get(equation.get(0))][strToMap.get(equation.get(1))] = values[i];
+            paths[strToMap.get(equation.get(1))][strToMap.get(equation.get(0))] = 1 / values[i];
+            i++;
+        }
+        double[] res = new double[queries.size()];
+        int count = 0;
+        for (List<String> query : queries) {
+            boolean[][] isVisited = new boolean[paths.length][paths.length];
+            Integer a = strToMap.get(query.get(0));
+            Integer b = strToMap.get(query.get(1));
+            if (a == null || b == null){
+                res[count] = -1.0;
+                count++;
+                continue;
+            }
+            double v =  calRes(a, b,paths,isVisited);
+            if (v > 0){
+                res[count] = v;
+            }else {
+                res[count] = -1.0;
+            }
+            count++;
+        }
+        return res;
+    }
+    private static double calRes(Integer a, Integer b, double[][] paths, boolean[][] isVisited) {
+        if (paths[a][b] > 0) return paths[a][b];
+       double res = 0;
+        for (int i = 0; i < paths.length; i++) {
+            if (paths[a][i] > 0 && !isVisited[a][i]){
+                isVisited[a][i] = true;
+                isVisited[i][a] = true;
+               res = Math.max(res,paths[a][i] * calRes(i,b,paths,isVisited));
+            }
+        }
+        return res;
+    }
+
 
     public static String serialize(TreeNode root) {
         if (root == null) return "#";
