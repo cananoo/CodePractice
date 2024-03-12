@@ -10,6 +10,72 @@ public class RepeatPractice {
 
 
 
+
+    public  List<String> removeInvalidParentheses(String s) {
+        int left = 0;
+        int right = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                left ++;
+            }else if (s.charAt(i) == ')'){
+                if (left > 0){
+                    left--;
+                }else {
+                    right++;
+                }
+            }
+        }
+        List<String> list = new ArrayList<>();
+        list.add(s);
+        if (right == 0 && left == 0) return list;
+        Set<String> set = new HashSet<>();
+        Dfs(set,s,new StringBuilder(),0,left,right);
+        return new ArrayList<>(set);
+    }
+
+    private void Dfs(Set<String> set, String s, StringBuilder sb, int i, int left, int right) {
+        if (i == s.length()){
+            if (left == 0 && right == 0 && isValid(sb.toString())){
+                set.add(sb.toString());
+            }
+            return;
+        }
+        if (s.charAt(i) == '('){
+            sb.append("(");
+            Dfs(set,s,sb,i + 1, left,right);
+            sb.deleteCharAt(sb.length() - 1);
+            if (left > 0){
+                Dfs(set,s,sb,i+1,left - 1,right);
+            }
+        }else if (s.charAt(i) == ')'){
+            sb.append(")");
+            Dfs(set,s,sb,i + 1, left,right);
+            sb.deleteCharAt(sb.length() - 1);
+            if (right > 0){
+                Dfs(set,s,sb,i+1,left ,right - 1);
+            }
+        }else {
+            sb.append(s.charAt(i));
+            Dfs(set,s,sb,i + 1, left,right);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+
+    private boolean isValid(String sb) {
+        if (sb.isEmpty()) return true;
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < sb.length(); i++) {
+            if (sb.charAt(i) == '(' ){
+                stack.push(sb.charAt(i));
+            }else if (sb.charAt(i) == ')'){
+                if (!stack.isEmpty()){
+                    stack.pop();
+                }else return false;
+            }
+        }
+        return stack.isEmpty();
+    }
+
     public static double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
         Map<String,Integer> strToMap = new HashMap<>();
         int idx = 0;
