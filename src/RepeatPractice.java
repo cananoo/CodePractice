@@ -9,6 +9,28 @@ public class RepeatPractice {
     }
 
 
+
+
+    public static boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> set = new HashSet<>();
+        for (String string : wordDict) {
+            set.add(string);
+        }
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = i - 1; j >= 0 ; j--) {
+                dp[i] = dp[j] && check(s.substring(j,i),set);
+                if (dp[i]) break;
+            }
+        }
+        return dp[s.length()];
+    }
+
+    private static boolean check(String s, Set<String> set) {
+        return set.contains(s);
+    }
+
     public static int maxSubArray(int[] nums) {
         int max = nums[0];
         int pre = 0;
