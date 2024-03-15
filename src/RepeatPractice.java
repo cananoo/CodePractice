@@ -11,6 +11,49 @@ public class RepeatPractice {
 
 
 
+
+    public static int maximalRectangle(char[][] matrix) {
+        int res = 0;
+        if (matrix.length == 0 || matrix[0].length == 0) return res;
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int[] arr = new int[col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (matrix[i][j] == '1'){
+                    arr[j] += 1;
+                }else {
+                    arr[j] = 0;
+                }
+            }
+            int temp =  maximalRectangle2(arr);
+            if (temp > res){
+                res = temp;
+            }
+        }
+        return res;
+    }
+
+    private static int maximalRectangle2(int[] arr) {
+        int res = 0;
+        if(arr.length == 0) return res;
+        if (arr.length == 1) return arr[0];
+        int[] newArr = new int[arr.length + 2];
+        for (int i = 0; i < arr.length; i++) {
+            newArr[i + 1] = arr[i];
+        }
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < newArr.length; i++) {
+            while (!stack.isEmpty() && newArr[stack.peek()] > newArr[i]){
+                int pop = stack.pop();
+                res = Math.max(res,(i - stack.peek() - 1 ) * newArr[pop]);
+            }
+            stack.push(i);
+        }
+        return res;
+    }
+
+
     public static boolean wordBreak(String s, List<String> wordDict) {
         Set<String> set = new HashSet<>();
         for (String string : wordDict) {
