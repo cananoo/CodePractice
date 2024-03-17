@@ -11,6 +11,25 @@ public class RepeatPractice {
 
 
 
+    public static List<Integer> findAnagrams(String s, String p) {
+        List<Integer> res = new ArrayList<>();
+        int sL = s.length();
+        int pL = p.length();
+        if (sL < pL) return res;
+        int[] sA = new int[26];
+        int[] pA = new int[26];
+        for (int i = 0; i < pL; i++) {
+            sA[s.charAt(i) - 'a']++;
+            pA[p.charAt(i) - 'a']++;
+        }
+        if (Arrays.equals(sA,pA)) res.add(0);
+        for (int i = pL; i < sL; i++) {
+            sA[s.charAt(i - pL) - 'a']--;
+            sA[s.charAt(i) - 'a']++;
+            if (Arrays.equals(sA,pA)) res.add(i - pL + 1);
+        }
+        return res;
+    }
 
     public static int maximalRectangle(char[][] matrix) {
         int res = 0;
