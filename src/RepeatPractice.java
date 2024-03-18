@@ -11,6 +11,46 @@ public class RepeatPractice {
 
 
 
+    class LRUCache {
+        int cap;
+        public LRUCache(int capacity) {
+         cap = capacity;
+        }
+        LinkedHashMap<Integer,Integer> cache = new LinkedHashMap<>();
+        public int get(int key) {
+            if (!cache.containsKey(key)) return -1;
+            Integer v = cache.remove(key);
+            cache.put(key,v);
+            return v;
+        }
+        public void put(int key, int value) {
+         if (cache.containsKey(key)){
+             Integer v = cache.remove(key);
+             cache.put(key,value);
+             return;
+         }
+         if (cap > cache.size()){
+             cache.put(key,value);
+             return;
+         }
+         cache.remove(cache.keySet().iterator().next());
+         cache.put(key,value);
+        }
+    }
+
+    /**
+     * Your LRUCache object will be instantiated and called as such:
+     * LRUCache obj = new LRUCache(capacity);
+     * int param_1 = obj.get(key);
+     * obj.put(key,value);
+     */
+
+
+
+
+
+
+
     public static List<Integer> findAnagrams(String s, String p) {
         List<Integer> res = new ArrayList<>();
         int sL = s.length();
