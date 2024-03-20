@@ -8,7 +8,22 @@ public class RepeatPractice {
         System.out.println(maxCoins(new int[]{3, 1, 5, 8}));
     }
 
-
+    public int maximalSquare(char[][] matrix) {
+        int maxArea = 0;
+        int row = matrix.length;
+        if (row == 0) return maxArea;
+        int col = matrix[0].length;
+        int[][] dp = new int[row + 1][col + 1];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (matrix[i][j] == '1'){
+                    dp[i + 1][j + 1] = Math.min(dp[i][j + 1],Math.min(dp[i + 1][j],dp[i][j])) + 1;
+                    maxArea = Math.max(maxArea,dp[i + 1][j + 1] * dp[i + 1][j + 1]);
+                }
+            }
+        }
+        return maxArea;
+    }
 
 
 
