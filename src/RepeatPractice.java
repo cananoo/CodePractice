@@ -8,6 +8,31 @@ public class RepeatPractice {
         System.out.println(maxCoins(new int[]{3, 1, 5, 8}));
     }
 
+
+    public  int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums == null || nums.length <2) return nums;
+        LinkedList<Integer> queue = new LinkedList<>();
+        int[] res = new int[nums.length - k + 1];
+        for (int i = 0; i < nums.length; i++) {
+            if (queue.isEmpty() || nums[i] <=  nums[queue.peekLast()]) {
+                queue.add(i);
+            }else {
+                while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i]) {
+                    queue.pollLast();
+                }
+                queue.add(i);
+            }
+
+            // 判断首位是否还在滑动窗口内
+            if (queue.peek() < i - k + 1) queue.poll();
+            // 滑动窗口形成
+            if (i + 1 >= k){
+                res[i + 1 - k] = nums[queue.peek()];
+            }
+        }
+        return  res;
+    }
+
     public int maximalSquare(char[][] matrix) {
         int maxArea = 0;
         int row = matrix.length;
