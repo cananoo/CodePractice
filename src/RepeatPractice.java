@@ -9,6 +9,22 @@ public class RepeatPractice {
     }
 
 
+
+    public int coinChange(int[] coins, int amount) {
+        int n = coins.length;
+        int[] amountToCoins = new int[amount + 1];
+        for (int i = 1; i < amountToCoins.length; i++) {
+            int min = Integer.MAX_VALUE;
+            for (int j = 0; j < n; j++) {
+                if (i - coins[j] >= 0 && amountToCoins[i - coins[j]] < min){
+                    min = amountToCoins[i - coins[j]] + 1;
+                }
+            }
+             amountToCoins[i] = min;
+        }
+        return amountToCoins[amount] == Integer.MAX_VALUE ? -1 : amountToCoins[amount];
+    }
+
     public  int[] maxSlidingWindow(int[] nums, int k) {
         if (nums == null || nums.length <2) return nums;
         LinkedList<Integer> queue = new LinkedList<>();
