@@ -10,6 +10,26 @@ public class RepeatPractice {
 
 
 
+
+    public static int largestRectangleArea(int[] heights ) {
+        int res = 0 ;
+        if (heights.length == 0) return res;
+        if (heights.length == 1) return heights[0];
+        int[] newHeights = new int[heights.length + 2];
+        for (int i = 1; i < newHeights.length - 1; i++) {
+            newHeights[i] = heights[i - 1];
+        }
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < newHeights.length; i++) {
+            while (!stack.isEmpty() && newHeights[stack.peek()] > newHeights[i]){
+                Integer pop = stack.pop();
+                res  = Math.max(res,(i - stack.peek() - 1) * newHeights[pop]);
+            }
+            stack.push(i);
+        }
+        return res;
+    }
+
     public int coinChange(int[] coins, int amount) {
         int n = coins.length;
         int[] amountToCoins = new int[amount + 1];
