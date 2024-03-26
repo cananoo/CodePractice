@@ -1,3 +1,4 @@
+import org.w3c.dom.Node;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -10,6 +11,22 @@ public class RepeatPractice {
 
 
 
+    int count = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        dfs(root);
+        return count;
+    }
+
+    private int dfs(TreeNode node) {
+        if (node == null) return 0;
+        int left = dfs(node.left);
+        int right = dfs(node.right);
+        count = Math.max(count,node.val);
+        count = Math.max(count,node.val + left);
+        count = Math.max(count,node.val + right);
+        count = Math.max(count,node.val + left + right);
+        return Math.max(0,Math.max(left,right)) + node.val;
+    }
 
     public static int largestRectangleArea(int[] heights ) {
         int res = 0 ;
