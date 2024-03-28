@@ -11,6 +11,36 @@ public class RepeatPractice {
 
 
 
+    public static  boolean isMatch(String s, String p) {
+        int n = s.length() + 1;
+        int m = p.length() + 1;
+        boolean[][] dp = new boolean[n][m];
+        dp[0][0] = true;
+        for (int i = 1; i < m; i++) {
+            if (p.charAt(i - 1) == '*' && dp[0][i - 2]){
+                dp[0][i] = true;
+            }else {
+                dp[0][i] = false;
+             }
+        }
+        for (int i = 1; i < n; i++) {
+            dp[i][0] = false;
+        }
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (p.charAt(j - 1) == '*' && (dp[i][j - 2] || dp[i-1][j] && (p.charAt(j - 2) == '.' || s.charAt(i-1) == p.charAt(j - 2)))){
+                    dp[i][j] = true;
+                } else if (dp[i - 1][j - 1] && (s.charAt(i - 1) == p.charAt( j - 1) || p.charAt(j - 1) == '.')){
+                dp[i][j] = true;
+            }else {
+                dp[i][j] = false;
+            }
+        }
+    }
+        return dp[n - 1][m - 1];
+    }
+
+
     int count = Integer.MIN_VALUE;
     public int maxPathSum(TreeNode root) {
         dfs(root);
