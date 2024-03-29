@@ -5,13 +5,30 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class RepeatPractice {
-    public static void main(String[] args) {
-        System.out.println(maxCoins(new int[]{3, 1, 5, 8}));
+
+
+
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int k = 1;
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            res[i] = k;
+            k *= nums[i];
+        }
+         k = 1;
+        for (int i = n - 1; i >= 0 ; i--) {
+            res[i] *= k ;
+            k *= nums[i];
+        }
+
+        return res;
     }
 
 
 
-    public static  boolean isMatch(String s, String p) {
+}
+  /*  public static  boolean isMatch(String s, String p) {
         int n = s.length() + 1;
         int m = p.length() + 1;
         boolean[][] dp = new boolean[n][m];
@@ -190,12 +207,12 @@ public class RepeatPractice {
         }
     }
 
-    /**
+    *//**
      * Your LRUCache object will be instantiated and called as such:
      * LRUCache obj = new LRUCache(capacity);
      * int param_1 = obj.get(key);
      * obj.put(key,value);
-     */
+     *//*
 
 
 
@@ -724,5 +741,5 @@ public class RepeatPractice {
             }
             return listNode;
         }
-    }
+    }*/
 
