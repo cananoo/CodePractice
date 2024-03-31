@@ -8,6 +8,15 @@ public class RepeatPractice {
 
 
 
+
+    public static int singleNumber(int[] nums) {
+        int i = nums[0];
+        for (int j = 1; j < nums.length; j++) {
+            i ^= nums[j];
+        }
+        return i;
+    }
+
     public int[] productExceptSelf(int[] nums) {
         int n = nums.length;
         int k = 1;
