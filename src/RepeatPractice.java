@@ -2,12 +2,38 @@ import org.w3c.dom.Node;
 
 import java.math.BigInteger;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 public class RepeatPractice {
 
+    public static void main(String[] args) {
+        System.out.println(combinationSum(new int[]{2,3,6,7},7));
+    }
 
 
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(candidates);
+        int start = 0;
+        findCombination(res,candidates,target,new ArrayList<>(),start);
+        return res;
+    }
+
+    public static void findCombination(List<List<Integer>> res ,int[] candidates, int target,List<Integer> temp,int start){
+        if (target == 0 ) {
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            start = i;
+            if (target - candidates[i] < 0){
+            break;
+            }
+            temp.add(candidates[i]);
+            findCombination(res,candidates,target - candidates[i],temp,start);
+            temp.remove(temp.size() - 1);
+        }
+    }
 
     public static int singleNumber(int[] nums) {
         int i = nums[0];
