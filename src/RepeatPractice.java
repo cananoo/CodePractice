@@ -11,6 +11,27 @@ public class RepeatPractice {
     }
 
 
+
+
+    public static int numTrees(int n) {
+      if (n == 0) return 0;
+
+      return count(n);
+    }
+
+    private static int count(int n) {
+        if (n == 0) return 1;
+        if (n == 1) return 1;
+        int i = 0;
+        int res = 0;
+        while (i < n){
+            res += count(i) * count(n - i - 1);
+            i++;
+        }
+        return res;
+    }
+
+
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(candidates);
