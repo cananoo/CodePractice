@@ -1,16 +1,73 @@
 import java.util.*;
 
-public class BuleBridgeCup {
-    public static void main(String[] args) {
+public class BlueBridgeCup {
+
+    public static void main(String args[]) {
+        int[] arr = {1,2,3,4};
+        permutationWithRepetitiveElement(arr,0);
+    }
+
+
+    //全排列
+    //① 无重复项
+    private static void permutation(int[] arr, int n) {
+     int len = arr.length;
+     if (n >= len - 1){
+         for (int i : arr) {
+             System.out.print(i);
+         }
+         System.out.println();
+     }else {
+         for (int i = n; i < arr.length; i++) {
+             {int temp = arr[n];arr[n] = arr[i]; arr[i] = temp ;}
+             permutation(arr,n + 1);
+             {int temp = arr[n];arr[n] = arr[i]; arr[i] = temp ;}
+         }
+     }
+    }
+
+
+    //② 有重复项 (只增加一个List，防止重复被换)
+    private static void permutationWithRepetitiveElement(int[] arr, int n) {
+        int num = arr.length;
+        List<Integer> list = new ArrayList<>();
+        if (n >= num - 1) {
+            for (int i : arr) {
+                System.out.print(i);
+            }
+            System.out.println();
+        }else {
+            for (int i = n; i < arr.length ; i++) {
+                if (!list.contains(arr[i])){
+                    list.add(arr[i]);
+                    {int temp = arr[n]; arr[n] = arr[i];arr[i] = temp;}
+                    permutationWithRepetitiveElement(arr,n + 1);
+                    {int temp = arr[n]; arr[n] = arr[i];arr[i] = temp;}
+                }
+            }
+        }
 
     }
 
 
 
 
+    //分治 (汉诺塔操作数)
+    public static int hanoiTower(int num){
+        if (num == 1) return 1;
+        int res = 0;
+        // 将上num - 1 从 A移动到C
+        res += hanoiTower(num - 1);
+        // 将最下面已从A移动到B
+        res += hanoiTower(1);
+        // 将C的盘子移动到B
+        res += hanoiTower(num - 1);
+
+        return res;
+    }
 
 
-
+    // 二分查找 非递归
     public static int findIdx(int[] arr, int target) {
         int left = 0;
         int right = arr.length -1;
@@ -27,8 +84,6 @@ public class BuleBridgeCup {
         }
         return -1;
     }
-
-
 
 
 
