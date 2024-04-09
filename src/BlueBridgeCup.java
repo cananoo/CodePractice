@@ -3,9 +3,39 @@ import java.util.*;
 public class BlueBridgeCup {
 
     public static void main(String args[]) {
-        int[] arr = {1,2,3,4};
-        permutationWithRepetitiveElement(arr,0);
+        int[] weight = {1, 4, 3};//物品的重量
+        int[] value = {1500,3000,2000};//物品的价值
+        int capacity = 4;//背包的容量
+        int n = value.length;//物品的个数
+        System.out.println(knapsack(n, capacity, weight, value));
+        System.out.println(fullKnapsack(n,capacity,weight,value));
     }
+
+
+
+
+
+    // 0 - 1 背包问题
+    public static int knapsack(int weightSize, int bagWeight, int weights[], int values[]) {
+        int[] dp = new int[bagWeight + 1];
+        for (int i = 0; i < weightSize; i++) {
+            for (int j = bagWeight; j >= weights[i] ; j--) {
+                dp[j] = Math.max(dp[j],dp[j - weights[i]] + values[i]);
+            }
+        }
+        return dp[bagWeight];
+    }
+    // 完全背包
+    public static int fullKnapsack(int weightSize, int bagWeight, int weights[], int values[]) {
+        int[] dp = new int[bagWeight + 1];
+        for (int i = 0; i < weightSize; i++) {
+            for (int j = weights[i]; j <= bagWeight ; j++) {
+                dp[j] = Math.max(dp[j],dp[j - weights[i]] + values[i]);
+            }
+        }
+        return dp[bagWeight];
+    }
+
 
 
     //全排列
